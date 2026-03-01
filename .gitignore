@@ -36,6 +36,13 @@
 *.exe
 *.out
 *.app
+*.bin
+*.out
 
-# debug information files
+# Debug information files
 *.dwo
+
+# Build process directories
+**/intermidiary/
+**/build/
+**/install/
