@@ -6,16 +6,19 @@ namespace it {
 	}
  	void Key::feedAction(Action action) {
 		switch (action) {
-			case Action::PRESSED:
+			case Action::PRESS:
 				justPressed = true;
 				pressed = true;
 				break;
 			case Action::REPEAT:
 				repeat = true;
 				break;
-			case Action::RELEASED:
+			case Action::RELEASE:
 				justReleased = true;
 				pressed = false;
+				break;
+			case Action::UNKNOWN:
+			default:
 				break;
 		}
 	}

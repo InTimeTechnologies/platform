@@ -11,8 +11,8 @@ namespace it {
 		// Enums
 		enum class Action : size_t {
 			UNKNOWN,
-			PRESSED,
-			RELEASED,
+			PRESS,
+			RELEASE,
 			REPEAT
 		};
 

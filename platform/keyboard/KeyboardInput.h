@@ -18,13 +18,13 @@ namespace it {
 		public:
 			// Constructor / Destructor
 			KeyboardInput();
-			KeyboardInput(const KeyboardInput& other) = default;
-			KeyboardInput(KeyboardInput&& other) noexcept = default;
+			KeyboardInput(const KeyboardInput& other) = delete;
+			KeyboardInput(KeyboardInput&& other) noexcept = delete;
 			~KeyboardInput() = default;
 
 			// Operators | assignment
-			KeyboardInput& operator=(const KeyboardInput& other) = default;
-			KeyboardInput& operator=(KeyboardInput&& other) noexcept = default;
+			KeyboardInput& operator=(const KeyboardInput& other) = delete;
+			KeyboardInput& operator=(KeyboardInput&& other) noexcept = delete;
 
 			// Getters
 			const std::forward_list<Key*>& getKeysToReset() const;

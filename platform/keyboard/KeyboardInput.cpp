@@ -1,5 +1,8 @@
 #include "KeyboardInput.h"
 
+// Dependencies | std
+#include <cassert>
+
 namespace it {
 	// class KeyboardInput
 

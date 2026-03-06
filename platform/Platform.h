@@ -1,63 +1,49 @@
 #pragma once
 
+// Dependencies | it
+#include "mouse/MouseInput.h"
+#include "keyboard/KeyboardInput.h"
+//#include "joystick/JoystickInput.h"
+#include "PlatformImplementation.h"
+
 namespace it {
+	struct PlatformConfiguration {
+		bool useWindow{ true };
+		bool useMouse{ true };
+		bool useKeyboard{ true };
+		bool useJoystick{ true };
+	};
+
 	class Platform {
 		// Object
-		protected:
+		private:
 			// Properties
 			bool isInit{ false };
-
+			PlatformImplementation& platformImplementation;
+			
 		public:
+			// Properties
+			MouseInput mouseInput{};
+			KeyboardInput keyboardInput{};
+			
 			// Constructor / Destructor
-			Platform() = default;
-			virtual ~Platform() = default;
+			Platform() = delete;
+			Platform(PlatformImplementation& platformImplementation);
+			Platform(const Platform& other) = delete;
+			Platform(Platform&& other) noexcept = delete;
+			~Platform();
+
+			// Operators | assignment
+			Platform& operator=(const Platform& other) = delete;
+			Platform& operator=(Platform&& other) noexcept = delete;
 
 			// Getters
-			virtual bool getIsInit() const = 0;
+			PlatformImplementation& getPlatformBackend() const;
+			bool getIsInit() const;
 
 			// Functions
-			virtual bool init() = 0;
-			virtual void deinit() = 0;
-			virtual void update() = 0;
-	};
-
-	class WindowEventForwarder {
-		// Object
-		public:
-			// Properties
-			bool windowEventForwardingEnabled{ true };
-
-			// Functions
-			virtual void forwardWindowEvents() = 0;
-	};
-
-	class MouseEventForwarder {
-		// Object
-		public:
-			// Properties
-			bool mouseEventForwardingEnabled{ true };
-
-			// Functions
-			virtual void forwardMouseEvents() = 0;
-	};
-
-	class KeyboardEventForwarder {
-		// Object
-		public:
-			// Properties
-			bool keyboardEventForwardingEnabled{ true };
-
-			// Functions
-			virtual void forwardKeyboardEvents() = 0;
-	};
-
-	class JoystickEventForwarder {
-		// Object
-		public:
-			// Properties
-			bool joystickEventForwardingEnabled{ true };
-
-			// Functions
-			virtual void forwardJoystickEvents() = 0;
+			bool init();
+			void deinit();
+			void update();
 	};
 }

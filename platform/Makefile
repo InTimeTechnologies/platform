@@ -15,21 +15,22 @@ SOLUTION_NAME := $(shell basename $(SOLUTION_DIR))
 # Compiler
 CXX ?= g++-15
 PLATFORM ?= $(shell $(CXX) -dumpmachine)
+CONFIGURATION ?= Debug
 CPP_STD ?= c++20
 C_STD ?= c11
 WARNINGS ?= all extra
-OPTIMIZATION ?= 0
 
 # Compiler arguments
 ARG_CPP_STD := $(addprefix -std=,$(CPP_STD))
 ARG_C_STD := $(addprefix -std=,$(C_STD))
 ARG_WARNINGS := $(addprefix -W,$(WARNINGS))
-ARG_OPTIMIZATION := $(addprefix -O,$(OPTIMIZATION))
-ARG_DEBUG_SYMBOLS ?=
-ifeq ($(DEBUG_SYMBOLS),)
-ifeq ($(OPTIMIZATION),0)
+ARG_DEBUG_SYMBOLS :=
+ARG_OPTIMIZATION :=
+ifeq ($(CONFIGURATION),Debug)
 ARG_DEBUG_SYMBOLS := -g
-endif
+ARG_OPTIMIZATION := -O0
+else ifeq ($(CONFIGURATION),Release)
+ARG_OPTIMIZATION := -O2 -DNDEBUG
 endif
 ARG_FLAGS ?= $(ARG_CPP_STD) $(ARG_C_STD) $(ARG_WARNINGS) $(ARG_OPTIMIZATION) $(ARG_DEBUG_SYMBOLS)
 
@@ -38,8 +39,8 @@ ARG_FLAGS ?= $(ARG_CPP_STD) $(ARG_C_STD) $(ARG_WARNINGS) $(ARG_OPTIMIZATION) $(A
 # Profiling: -pg -O2
 
 # Out directories
-INTERMIDIARY_DIR ?= intermidiary/$(PLATFORM)/O$(OPTIMIZATION)
-BUILD_DIR ?= build/$(PLATFORM)/O$(OPTIMIZATION)
+INTERMIDIARY_DIR ?= intermidiary/$(PLATFORM)/$(CONFIGURATION)
+BUILD_DIR ?= build/$(PLATFORM)/$(CONFIGURATION)
 
 # Definitions, header include, library directory include and library include
 DEFINITIONS := STB_IMAGE_IMPLEMENTATION _CRT_SECURE_NO_WARNINGS STB_IMAGE_WRITE_IMPLEMENTATION
@@ -102,7 +103,10 @@ NULL := null
 TEST := $(NULL)
 VAR ?= $(NULL)
 
-build_project: $(OBJS) build_external_src
+# ---------------------------------------------------------------------------------------------------------------------
+# Build, rebuild, clean commands
+# ---------------------------------------------------------------------------------------------------------------------
+build: $(OBJS) build_external_src
 	@mkdir -p $(BUILD_DIR)
 	@echo Compiling $($(OBJS))
 	$(CXX_LINK) $(OUTPUT_PATH)
@@ -113,8 +117,12 @@ build_external_src:
 	@echo Finished building external src
 -include $(OBJS:.o=.d)
 
-.PHONY: rebuild_project
-rebuild_project: clean build_project
+.PHONY: clean
+clean:
+	rm -rf $(word 1, $(subst /, ,$(BUILD_DIR))) $(word 1, $(subst /, ,$(INTERMIDIARY_DIR)))
+
+.PHONY: rebuild
+rebuild: clean build
 
 # $@ is the target
 # $< is the first prerequisite
@@ -128,18 +136,6 @@ $(INTERMIDIARY_DIR)/%.o: %.c
 $(SRC_DEPENDENCIES_DIR)/%.d: %.cpp
 	@echo "$<" "$@"
 
-.PHONY: run
-run: build_project
-	$(OUTPUT_PATH)
-
-.PHONY: run_whithout_building
-run_whithout_building:
-	$(OUTPUT_PATH)
-
-.PHONY: clean
-clean:
-	rm -rf $(word 1, $(subst /, ,$(BUILD_DIR))) $(word 1, $(subst /, ,$(INTERMIDIARY_DIR)))
-
 # Print variable and its contents
 # example usage: make print VAR=PROJECT_DIR
 print_var:
@@ -147,6 +143,33 @@ print_var:
 	@echo "--------------------"
 	@printf "%s\n" $($(VAR))
 
-.PHONEY: test
-test:
-	@echo Test: "$(word 1, $(subst /, ,$(BUILD_DIR)))"
+# ---------------------------------------------------------------------------------------------------------------------
+# Print Makefile variables
+# ---------------------------------------------------------------------------------------------------------------------
+.PHONY: print_output_path
+print_output_path:
+	@echo $(OUTPUT_PATH)
+
+.PHONY: print_build_dir
+print_build_dir:
+	@echo $(BUILD_DIR)
+
+.PHONY: print_platform
+print_platform:
+	@echo $(PLATFORM)
+
+.PHONY: print_configuration
+print_configuration:
+	@echo $(CONFIGURATION)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Run binary commands
+# ---------------------------------------------------------------------------------------------------------------------
+.PHONY: run
+run: build
+	@$(OUTPUT_PATH)
+
+.PHONY: debug
+debug: build
+	@echo "Debugging $(OUTPUT_PATH)"
+	@gdb --args $(OUTPUT_PATH)

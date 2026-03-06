@@ -11,8 +11,8 @@ namespace it {
 		// Enums
 		enum class Action {
 			UNKNOWN,
-			PRESSED,
-			RELEASED
+			PRESS,
+			RELEASE
 		};
 
 		// Properties
