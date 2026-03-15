@@ -1,0 +1,30 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Linux-g++-15",
+            "compilerPath": "/usr/bin/g++-15",
+            "cStandard": "c11",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "linux-gcc-x64",
+            "includePath": [
+                "${workspaceFolder}/**",                     // All project files
+                "/usr/include",                              // System headers
+                "/usr/local/include"                         // Custom libs like GLFW
+            ],
+            "defines": [
+                "STB_IMAGE_IMPLEMENTATION",
+                "_CRT_SECURE_NO_WARNINGS",
+                "STB_IMAGE_WRITE_IMPLEMENTATION"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "/usr/include",
+                    "/usr/local/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ]
+}

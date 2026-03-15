@@ -7,13 +7,6 @@
 #include "PlatformImplementation.h"
 
 namespace it {
-	struct PlatformConfiguration {
-		bool useWindow{ true };
-		bool useMouse{ true };
-		bool useKeyboard{ true };
-		bool useJoystick{ true };
-	};
-
 	class Platform {
 		// Object
 		private:
