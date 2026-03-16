@@ -3,24 +3,24 @@
 // Dependencies | std
 #include <string>
 
-// Dependencies | it
-#include "MouseButtonCode.h"
+// Dependencies | in_time_engine | input | joystick
+#include "JoystickButtonCode.h"
 
 namespace it {
 	namespace platform {
-		struct MouseButton {
+		struct JoystickButton {
 			// Enums
-			enum class Action {
+			enum class Action : size_t {
 				UNKNOWN,
-				PRESS,
-				RELEASE
+				PRESSED,
+				RELEASED
 			};
-	
+			
 			// Properties
-			MouseButtonCode buttonCode{ MouseButtonCode::UNKNOWN };
-			bool pressed{ false };
+			JoystickButtonCode buttonCode{ JoystickButtonCode::UNKNOWN };
 			bool justPressed{ false };
 			bool justReleased{ false };
+			bool pressed{ false };
 			std::string description{};
 	
 			// Functions

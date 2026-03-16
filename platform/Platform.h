@@ -1,42 +1,71 @@
 #pragma once
 
-// Dependencies | it
+// Dependencies | it::platform
+#if defined(WINDOW)
+#include "window/WindowManager.h"
+#endif
+
+#if defined(MOUSE)
 #include "mouse/MouseInput.h"
+#endif
+
+#if defined(KEYBOARD)
 #include "keyboard/KeyboardInput.h"
-//#include "joystick/JoystickInput.h"
-#include "PlatformImplementation.h"
+#endif
+
+#if defined(JOYSTICK)
+#include "joystick/JoystickInput.h"
+#endif
 
 namespace it {
-	class Platform {
-		// Object
-		private:
-			// Properties
-			bool isInit{ false };
-			PlatformImplementation& platformImplementation;
+	namespace platform {
+		class Platform {
+			// Static
+			private:
+				// Properties
+				static Platform* s_singleton;
 			
-		public:
-			// Properties
-			MouseInput mouseInput{};
-			KeyboardInput keyboardInput{};
-			
-			// Constructor / Destructor
-			Platform() = delete;
-			Platform(PlatformImplementation& platformImplementation);
-			Platform(const Platform& other) = delete;
-			Platform(Platform&& other) noexcept = delete;
-			~Platform();
+			public:
+				// Getters
+				static Platform* s_getSingleton();
 
-			// Operators | assignment
-			Platform& operator=(const Platform& other) = delete;
-			Platform& operator=(Platform&& other) noexcept = delete;
+			// Object
+			private:
+				// Properties
+				bool isInit{ false };
 
-			// Getters
-			PlatformImplementation& getPlatformBackend() const;
-			bool getIsInit() const;
+			public:
+				// Properties
+				#if defined(WINDOW)
+				WindowManager windowManager{};
+				#endif
+				#if defined(MOUSE)
+				MouseInput mouseInput{};
+				#endif
+				#if defined(KEYBOARD)
+				KeyboardInput keyboardInput{};
+				#endif
+				#if defined(JOYSTICK)
+				JoystickInput joystickInput{};
+				#endif
 
-			// Functions
-			bool init();
-			void deinit();
-			void update();
-	};
+				// Constructor / Destructor
+				Platform();
+				Platform(const Platform& other) = delete;
+				Platform(Platform&& other) noexcept = delete;
+				~Platform();
+
+				// Operators | assignment
+				Platform& operator=(const Platform& other) = delete;
+				Platform& operator=(Platform&& other) noexcept = delete;
+
+				// Getters
+				bool getIsInit() const;
+
+				// Functions
+				bool init();
+				void deinit();
+				void update();
+		};
+	}
 }

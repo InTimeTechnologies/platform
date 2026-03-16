@@ -15,7 +15,15 @@
             "defines": [
                 "STB_IMAGE_IMPLEMENTATION",
                 "_CRT_SECURE_NO_WARNINGS",
-                "STB_IMAGE_WRITE_IMPLEMENTATION"
+                "STB_IMAGE_WRITE_IMPLEMENTATION",
+                "WINDOW",
+                "MOUSE",
+                "KEYBOARD",
+                "JOYSTICK",
+                "GLFW_WINDOW",
+                "GLFW_MOUSE",
+                "GLFW_KEYBOARD",
+                "GLFW_JOYSTICK"
             ],
             "browse": {
                 "path": [

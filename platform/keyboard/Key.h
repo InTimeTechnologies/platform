@@ -7,29 +7,31 @@
 #include "KeyCode.h"
 
 namespace it {
-	struct Key {
-		// Enums
-		enum class Action : size_t {
-			UNKNOWN,
-			PRESS,
-			RELEASE,
-			REPEAT
+	namespace platform {
+		struct Key {
+			// Enums
+			enum class Action : size_t {
+				UNKNOWN,
+				PRESS,
+				RELEASE,
+				REPEAT
+			};
+	
+			// Properties
+			KeyCode keyCode{ KeyCode::UNKNOWN };
+			bool justPressed{ false };
+			bool repeat{ false };
+			bool justReleased{ false };
+			bool pressed{ false };
+			std::string description{};
+	
+			// Functions
+			bool inTransientState() const;
+			void feedAction(Action action);
+			void reset();
+			void resetTransientState();
+			void resetJustPressed();
+			void resetJustReleased();
 		};
-
-		// Properties
-		KeyCode keyCode{ KeyCode::UNKNOWN };
-		bool justPressed{ false };
-		bool repeat{ false };
-		bool justReleased{ false };
-		bool pressed{ false };
-		std::string description{};
-
-		// Functions
-		bool inTransientState() const;
-		void feedAction(Action action);
-		void reset();
-		void resetTransientState();
-		void resetJustPressed();
-		void resetJustReleased();
-	};
+	}
 }
