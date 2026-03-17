@@ -10,14 +10,17 @@ namespace it {
 		}
 		void JoystickButton::feedAction(Action action) {
 			switch (action) {
-			case Action::PRESSED:
-				justPressed = true;
-				pressed = true;
-				break;
-			case Action::RELEASED:
-				justReleased = true;
-				pressed = false;
-				break;
+				case Action::PRESSED:
+					justPressed = true;
+					pressed = true;
+					break;
+				case Action::RELEASED:
+					justReleased = true;
+					pressed = false;
+					break;
+				case Action::UNKNOWN:
+				default:
+					break;
 			}
 		}
 		void JoystickButton::reset() {

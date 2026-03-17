@@ -39,13 +39,13 @@ namespace it {
 		}
 	
 		// Functions
-		void MouseInput::feedAction(MouseButtonCode mouseButtonCode, MouseButton::Action action) {
-			size_t i = getMouseButtonIndex(mouseButtonCode);
+		void MouseInput::feedEvent(MouseButtonEvent mouseButtonEvent) {
+			size_t i = getMouseButtonIndex(mouseButtonEvent.mouseButtonCode);
 	
 			if (!mouseButtons[i].inTransientState())
 				mouseButtonsInTransientState.push_front(&mouseButtons[i]);
 	
-			mouseButtons[i].feedAction(action);
+			mouseButtons[i].feedAction(mouseButtonEvent.action);
 		}
 		void MouseInput::reset() {
 			for (size_t i = 0; i < mouseButtons.size(); i++)

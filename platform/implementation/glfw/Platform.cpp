@@ -54,6 +54,11 @@ namespace it {
 		}
 		void Platform::update() {
 			// Reset transient states
+			#if defined(WINDOW) && defined(GLFW_WINDOW)
+			for (Window& window : windowManager.windowList)
+				window.keyEventList.clear();
+			#endif
+
 			#if defined(MOUSE) && defined(GLFW_MOUSE)
 			mouseInput.resetTransientStates();
 			#endif

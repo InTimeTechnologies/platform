@@ -13,7 +13,7 @@ namespace it {
 		KeyboardInput::KeyboardInput() {
 			size_t i = 0;
 			keys[i++] = Key{ KeyCode::UNKNOWN, false, false, false, false, "unknown" };
-			keys[i++] = Key{ KeyCode::SPACE, false, false, false, false, " " };
+			keys[i++] = Key{ KeyCode::SPACE, false, false, false, false, "space" };
 			keys[i++] = Key{ KeyCode::APOSTROPHE, false, false, false, false, "\'" };
 			keys[i++] = Key{ KeyCode::COMMA, false, false, false, false, "," };
 			keys[i++] = Key{ KeyCode::MINUS, false, false, false, false, "-" };
@@ -57,9 +57,9 @@ namespace it {
 			keys[i++] = Key{ KeyCode::X, false, false, false, false, "x" };
 			keys[i++] = Key{ KeyCode::Y, false, false, false, false, "y" };
 			keys[i++] = Key{ KeyCode::Z, false, false, false, false, "z" };
-			keys[i++] = Key{ KeyCode::LEFT_BRACKET, false, false, false, false, "[" };
+			keys[i++] = Key{ KeyCode::BRACKET_LEFT, false, false, false, false, "[" };
 			keys[i++] = Key{ KeyCode::BACKSLASH, false, false, false, false, "\\" };
-			keys[i++] = Key{ KeyCode::RIGHT_BRACKET, false, false, false, false, "]" };
+			keys[i++] = Key{ KeyCode::BRACKET_RIGHT, false, false, false, false, "]" };
 			keys[i++] = Key{ KeyCode::GRAVE_ACCENT, false, false, false, false, "`" };
 			keys[i++] = Key{ KeyCode::WORLD_1, false, false, false, false, "world 1" };
 			keys[i++] = Key{ KeyCode::WORLD_2, false, false, false, false, "world 2" };
@@ -69,18 +69,18 @@ namespace it {
 			keys[i++] = Key{ KeyCode::BACKSPACE, false, false, false, false, "\b" };
 			keys[i++] = Key{ KeyCode::INSERT, false, false, false, false, "insert" };
 			keys[i++] = Key{ KeyCode::DELETE, false, false, false, false, "delete" };
-			keys[i++] = Key{ KeyCode::RIGHT_ARROW, false, false, false, false, "right arrow" };
-			keys[i++] = Key{ KeyCode::LEFT_ARROW, false, false, false, false, "left arrow" };
-			keys[i++] = Key{ KeyCode::DOWN_ARROW, false, false, false, false, "down arrow" };
-			keys[i++] = Key{ KeyCode::UP_ARROW, false, false, false, false, "up arrow" };
-			keys[i++] = Key{ KeyCode::PAGE_UP, false, false, false, false, "page up" };
+			keys[i++] = Key{ KeyCode::ARROW_RIGHT, false, false, false, false, "arrow_right" };
+			keys[i++] = Key{ KeyCode::ARROW_LEFT, false, false, false, false, "arrow_left" };
+			keys[i++] = Key{ KeyCode::ARROW_DOWN, false, false, false, false, "arrow_down" };
+			keys[i++] = Key{ KeyCode::ARROW_UP, false, false, false, false, "arrow" };
+			keys[i++] = Key{ KeyCode::PAGE_UP, false, false, false, false, "page_up" };
 			keys[i++] = Key{ KeyCode::PAGE_DOWN, false, false, false, false, "page down" };
 			keys[i++] = Key{ KeyCode::HOME, false, false, false, false, "home" };
 			keys[i++] = Key{ KeyCode::END, false, false, false, false, "end" };
-			keys[i++] = Key{ KeyCode::CAPS_LOCK, false, false, false, false, "caps lock" };
+			keys[i++] = Key{ KeyCode::CAPS_LOCK, false, false, false, false, "caps_lock" };
 			keys[i++] = Key{ KeyCode::SCROLL_LOCK, false, false, false, false, "scroll lock" };
-			keys[i++] = Key{ KeyCode::NUM_LOCK, false, false, false, false, "num lock" };
-			keys[i++] = Key{ KeyCode::PRINT_SCREEN, false, false, false, false, "print screen" };
+			keys[i++] = Key{ KeyCode::NUM_LOCK, false, false, false, false, "num_lock" };
+			keys[i++] = Key{ KeyCode::PRINT_SCREEN, false, false, false, false, "print_screen" };
 			keys[i++] = Key{ KeyCode::PAUSE, false, false, false, false, "pause" };
 			keys[i++] = Key{ KeyCode::F1, false, false, false, false, "f1" };
 			keys[i++] = Key{ KeyCode::F2, false, false, false, false, "f2" };
@@ -107,31 +107,31 @@ namespace it {
 			keys[i++] = Key{ KeyCode::F23, false, false, false, false, "f23" };
 			keys[i++] = Key{ KeyCode::F24, false, false, false, false, "f24" };
 			keys[i++] = Key{ KeyCode::F25, false, false, false, false, "f25" };
-			keys[i++] = Key{ KeyCode::NUMPAD_0, false, false, false, false, "numpad 0" };
-			keys[i++] = Key{ KeyCode::NUMPAD_1, false, false, false, false, "numpad 1" };
-			keys[i++] = Key{ KeyCode::NUMPAD_2, false, false, false, false, "numpad 2" };
-			keys[i++] = Key{ KeyCode::NUMPAD_3, false, false, false, false, "numpad 3" };
-			keys[i++] = Key{ KeyCode::NUMPAD_4, false, false, false, false, "numpad 4" };
-			keys[i++] = Key{ KeyCode::NUMPAD_5, false, false, false, false, "numpad 5" };
-			keys[i++] = Key{ KeyCode::NUMPAD_6, false, false, false, false, "numpad 6" };
-			keys[i++] = Key{ KeyCode::NUMPAD_7, false, false, false, false, "numpad 7" };
-			keys[i++] = Key{ KeyCode::NUMPAD_8, false, false, false, false, "numpad 8" };
-			keys[i++] = Key{ KeyCode::NUMPAD_9, false, false, false, false, "numpad 9" };
-			keys[i++] = Key{ KeyCode::NUMPAD_DECIMAL, false, false, false, false, "numpad ." };
-			keys[i++] = Key{ KeyCode::NUMPAD_DIVIDE, false, false, false, false, "numpad /" };
-			keys[i++] = Key{ KeyCode::NUMPAD_MULTIPLY, false, false, false, false, "numpad *" };
-			keys[i++] = Key{ KeyCode::NUMPAD_SUBTRACT, false, false, false, false, "numpad -" };
-			keys[i++] = Key{ KeyCode::NUMPAD_ADD, false, false, false, false, "numpad +" };
-			keys[i++] = Key{ KeyCode::NUMPAD_ENTER, false, false, false, false, "numpad enter" };
-			keys[i++] = Key{ KeyCode::NUMPAD_EQUAL, false, false, false, false, "numpad =" };
-			keys[i++] = Key{ KeyCode::LEFT_SHIFT, false, false, false, false, "left shift" };
-			keys[i++] = Key{ KeyCode::LEFT_CONTROL, false, false, false, false, "left control" };
-			keys[i++] = Key{ KeyCode::LEFT_ALT, false, false, false, false, "left alt" };
-			keys[i++] = Key{ KeyCode::LEFT_SUPER, false, false, false, false, "left super" };
-			keys[i++] = Key{ KeyCode::RIGHT_SHIFT, false, false, false, false, "left shift" };
-			keys[i++] = Key{ KeyCode::RIGHT_CONTROL, false, false, false, false, "right control" };
-			keys[i++] = Key{ KeyCode::RIGHT_ALT, false, false, false, false, "right alt" };
-			keys[i++] = Key{ KeyCode::RIGHT_SUPER, false, false, false, false, "right super" };
+			keys[i++] = Key{ KeyCode::NUMPAD_0, false, false, false, false, "numpad_0" };
+			keys[i++] = Key{ KeyCode::NUMPAD_1, false, false, false, false, "numpad_1" };
+			keys[i++] = Key{ KeyCode::NUMPAD_2, false, false, false, false, "numpad_2" };
+			keys[i++] = Key{ KeyCode::NUMPAD_3, false, false, false, false, "numpad_3" };
+			keys[i++] = Key{ KeyCode::NUMPAD_4, false, false, false, false, "numpad_4" };
+			keys[i++] = Key{ KeyCode::NUMPAD_5, false, false, false, false, "numpad_5" };
+			keys[i++] = Key{ KeyCode::NUMPAD_6, false, false, false, false, "numpad_6" };
+			keys[i++] = Key{ KeyCode::NUMPAD_7, false, false, false, false, "numpad_7" };
+			keys[i++] = Key{ KeyCode::NUMPAD_8, false, false, false, false, "numpad_8" };
+			keys[i++] = Key{ KeyCode::NUMPAD_9, false, false, false, false, "numpad_9" };
+			keys[i++] = Key{ KeyCode::NUMPAD_DECIMAL, false, false, false, false, "numpad_." };
+			keys[i++] = Key{ KeyCode::NUMPAD_DIVIDE, false, false, false, false, "numpad_/" };
+			keys[i++] = Key{ KeyCode::NUMPAD_MULTIPLY, false, false, false, false, "numpad_*" };
+			keys[i++] = Key{ KeyCode::NUMPAD_SUBTRACT, false, false, false, false, "numpad_-" };
+			keys[i++] = Key{ KeyCode::NUMPAD_ADD, false, false, false, false, "numpad_+" };
+			keys[i++] = Key{ KeyCode::NUMPAD_ENTER, false, false, false, false, "numpad_enter" };
+			keys[i++] = Key{ KeyCode::NUMPAD_EQUAL, false, false, false, false, "numpad_=" };
+			keys[i++] = Key{ KeyCode::LEFT_SHIFT, false, false, false, false, "left_shift" };
+			keys[i++] = Key{ KeyCode::LEFT_CONTROL, false, false, false, false, "left_control" };
+			keys[i++] = Key{ KeyCode::LEFT_ALT, false, false, false, false, "left_alt" };
+			keys[i++] = Key{ KeyCode::LEFT_SUPER, false, false, false, false, "left_super" };
+			keys[i++] = Key{ KeyCode::RIGHT_SHIFT, false, false, false, false, "left_shift" };
+			keys[i++] = Key{ KeyCode::RIGHT_CONTROL, false, false, false, false, "right_control" };
+			keys[i++] = Key{ KeyCode::RIGHT_ALT, false, false, false, false, "right_alt" };
+			keys[i++] = Key{ KeyCode::RIGHT_SUPER, false, false, false, false, "right_super" };
 			keys[i++] = Key{ KeyCode::MENU, false, false, false, false, "menu" };
 		}
 	
@@ -154,13 +154,13 @@ namespace it {
 		}
 	
 		// Functions
-		void KeyboardInput::feedAction(KeyCode keyCode, Key::Action action) {
-			size_t i = getKeyIndex(keyCode);
+		void KeyboardInput::feedEvent(KeyEvent keyEvent) {
+			size_t i = getKeyIndex(keyEvent.keyCode);
 	
 			if (!keys[i].inTransientState())
 				keysInTransientState.push_front(&keys[i]);
 	
-			keys[i].feedAction(action);
+			keys[i].feedAction(keyEvent.action);
 		}
 		void KeyboardInput::reset() {
 			for (size_t i = 0; i < keys.size(); i++)

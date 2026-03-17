@@ -6,6 +6,7 @@
 // Dependencies it::platform
 #include "Platform.h"
 #include "window/Window.h"
+#include "keyboard/to_string.h"
 
 void print(const it::platform::Window& window) {
 	std::cout << "title: " << window.getTitle() << std::endl;
@@ -27,9 +28,8 @@ int testWindowing() {
 
 	// Window
 	std::cout << "Creating window." << std::endl;
-	it::platform::Window window{};
+	it::platform::Window& window = platform.windowManager.windowList.emplace_back();
 	bool windowCreated = window.create();
-	std::cout << "test" << std::endl;
 	if (!windowCreated) {
 		std::cout << "Error: Failed to create window." << std::endl;
 		return 2;
@@ -37,26 +37,31 @@ int testWindowing() {
 	window.setVisible(true);
 
 	// Setup
-	std::cout << window.getContextMajorVersion() << ":" << window.getContextMinorVersion() << ":" << window.getContextRevision() << std::endl;
+	bool exit = false;
+	window.onClose = [&exit]() { exit = true; };
 	
-	// Loop
-	std::cout << "Running loop." << std::endl;
 	std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 	std::chrono::steady_clock::time_point currentTime = startTime;
 	std::chrono::steady_clock::time_point stopTime = startTime + std::chrono::seconds(10);
 	std::chrono::nanoseconds sleepTime = std::chrono::milliseconds(16);
-	while (currentTime < stopTime) {
+	
+	// Loop
+	std::cout << "Running loop." << std::endl;
+	while (!exit && currentTime < stopTime) {
 		platform.update();
 		window.makeContextCurrent();
 		window.swapBuffers();
-		//print(window);
 
-		if (platform.keyboardInput.getKey(it::platform::KeyCode::ENTER).justPressed)
-			window.setSize(500, 500);
+		for (const it::platform::KeyEvent& keyEvent : window.getKeyEventList()) {
+			std::cout << it::platform::to_string(keyEvent) << std::endl;
 
-		const it::platform::Key& quitKey = platform.keyboardInput.getKey(it::platform::KeyCode::ESCAPE);
-		if (quitKey.justPressed)
-			return 0;
+			if (keyEvent.keyCode == it::platform::KeyCode::ENTER && keyEvent.action == it::platform::KeyAction::PRESS)
+				window.setSize(500, 500);
+	
+			if (keyEvent.keyCode == it::platform::KeyCode::ESCAPE && keyEvent.action == it::platform::KeyAction::PRESS)
+				exit = true;
+		}
+
 
 		std::this_thread::sleep_for(sleepTime);
 		currentTime = std::chrono::steady_clock::now();

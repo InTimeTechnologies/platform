@@ -5,20 +5,20 @@ namespace it {
 		bool Key::inTransientState() const {
 			return justPressed || repeat || justReleased;
 		}
-		void Key::feedAction(Action action) {
+		void Key::feedAction(KeyAction action) {
 			switch (action) {
-				case Action::PRESS:
+				case KeyAction::PRESS:
 					justPressed = true;
 					pressed = true;
 					break;
-				case Action::REPEAT:
+				case KeyAction::REPEAT:
 					repeat = true;
 					break;
-				case Action::RELEASE:
+				case KeyAction::RELEASE:
 					justReleased = true;
 					pressed = false;
 					break;
-				case Action::UNKNOWN:
+				case KeyAction::UNKNOWN:
 				default:
 					break;
 			}

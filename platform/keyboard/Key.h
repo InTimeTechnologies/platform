@@ -5,18 +5,11 @@
 
 // Dependencies | it
 #include "KeyCode.h"
+#include "KeyAction.h"
 
 namespace it {
 	namespace platform {
 		struct Key {
-			// Enums
-			enum class Action : size_t {
-				UNKNOWN,
-				PRESS,
-				RELEASE,
-				REPEAT
-			};
-	
 			// Properties
 			KeyCode keyCode{ KeyCode::UNKNOWN };
 			bool justPressed{ false };
@@ -27,7 +20,7 @@ namespace it {
 	
 			// Functions
 			bool inTransientState() const;
-			void feedAction(Action action);
+			void feedAction(KeyAction action);
 			void reset();
 			void resetTransientState();
 			void resetJustPressed();

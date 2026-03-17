@@ -2,7 +2,7 @@
 
 namespace it {
 	namespace platform {
-		enum class KeyCode : size_t {
+		enum class KeyCode : unsigned int {
 			UNKNOWN,
 			SPACE,
 			APOSTROPHE,
@@ -48,9 +48,9 @@ namespace it {
 			X,
 			Y,
 			Z,
-			LEFT_BRACKET,
+			BRACKET_LEFT,
 			BACKSLASH,
-			RIGHT_BRACKET,
+			BRACKET_RIGHT,
 			GRAVE_ACCENT,
 			WORLD_1,
 			WORLD_2,
@@ -60,10 +60,10 @@ namespace it {
 			BACKSPACE,
 			INSERT,
 			DELETE,
-			RIGHT_ARROW,
-			LEFT_ARROW,
-			DOWN_ARROW,
-			UP_ARROW,
+			ARROW_RIGHT,
+			ARROW_LEFT,
+			ARROW_DOWN,
+			ARROW_UP,
 			PAGE_UP,
 			PAGE_DOWN,
 			HOME,

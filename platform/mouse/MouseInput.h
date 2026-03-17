@@ -5,7 +5,7 @@
 #include <forward_list>
 
 // Dependencies | it
-#include "MouseButton.h"
+#include "MouseButtonEvent.h"
 
 namespace it {
 	namespace platform {
@@ -35,7 +35,7 @@ namespace it {
 				size_t getMouseButtonIndex(MouseButtonCode mouseButtonCode) const;
 	
 				// Functions
-				void feedAction(MouseButtonCode code, MouseButton::Action action);
+				void feedEvent(MouseButtonEvent mouseButtonEvent);
 				void reset();
 				void resetTransientStates();
 				void resetAllTransientStates();
