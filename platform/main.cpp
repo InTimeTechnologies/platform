@@ -7,6 +7,7 @@
 #include "Platform.h"
 #include "window/Window.h"
 #include "keyboard/to_string.h"
+#include "gamepad/GamepadInput.h"
 
 void print(const it::platform::Window& window) {
 	std::cout << "title: " << window.getTitle() << std::endl;
@@ -14,6 +15,16 @@ void print(const it::platform::Window& window) {
 	std::cout << "visible: " << window.getVisible() << std::endl;
 	std::cout << "resizable: " << window.getResizable() << std::endl;
 	std::cout << "focused: " << window.getFocused() << std::endl;
+}
+
+void testGamepad(it::platform::Platform& platform) {
+	it::platform::Gamepad& gamepad = platform.gamepadInput.getGamepad(it::platform::GamepadCode::GAMEPAD_0);
+	if (gamepad.getButtonA().pressed) {
+		std::cout << "pressed" << std::endl;
+	}
+	else {
+		std::cout << "released" << std::endl;
+	}
 }
 
 int testWindowing() {
@@ -47,7 +58,10 @@ int testWindowing() {
 		window.makeContextCurrent();
 		window.swapBuffers();
 
+		testGamepad(platform);
+
 		for (const it::platform::KeyEvent& keyEvent : window.getKeyEventList()) {
+
 			if (keyEvent.keyCode == it::platform::KeyCode::ENTER && keyEvent.action == it::platform::KeyAction::PRESS)
 				window.setSize(500, 500);
 	

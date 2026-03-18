@@ -8,14 +8,16 @@ namespace it {
 		void Key::feedAction(KeyAction action) {
 			switch (action) {
 				case KeyAction::PRESS:
-					justPressed = true;
+					if (!pressed)
+						justPressed = true;
 					pressed = true;
 					break;
 				case KeyAction::REPEAT:
 					repeat = true;
 					break;
 				case KeyAction::RELEASE:
-					justReleased = true;
+					if (pressed)
+						justReleased = true;
 					pressed = false;
 					break;
 				case KeyAction::UNKNOWN:

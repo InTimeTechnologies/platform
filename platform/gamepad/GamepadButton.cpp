@@ -11,11 +11,13 @@ namespace it {
 		void GamepadButton::feedAction(GamepadButtonAction action) {
 			switch (action) {
 				case GamepadButtonAction::PRESSED:
-					justPressed = true;
+					if (!pressed)
+						justPressed = true;
 					pressed = true;
 					break;
 				case GamepadButtonAction::RELEASED:
-					justReleased = true;
+					if (pressed)
+						justReleased = true;
 					pressed = false;
 					break;
 				case GamepadButtonAction::UNKNOWN:

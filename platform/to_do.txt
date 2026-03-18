@@ -1,3 +1,4 @@
-Implement joystick functionalities.
-Implementing a second backend, like Win32 or Qt.
+Modify Makefile to generate .a and .so files. Check wether validate whether .a and .so files and which arguments you'd need to pass to the compiler to do so.
 Create <path_to_root>/test project. In here, you will write all your test cases for the platform project located in <path_to_root>/platform.
+Implement a second framework like Win32 or Qt.
+

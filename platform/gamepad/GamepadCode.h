@@ -3,22 +3,22 @@
 namespace it {
 	namespace platform {
 		enum class GamepadCode : unsigned int {
-			CONTROLLER_0,
-			CONTROLLER_1,
-			CONTROLLER_2,
-			CONTROLLER_3,
-			CONTROLLER_4,
-			CONTROLLER_5,
-			CONTROLLER_6,
-			CONTROLLER_7,
-			CONTROLLER_8,
-			CONTROLLER_9,
-			CONTROLLER_10,
-			CONTROLLER_11,
-			CONTROLLER_12,
-			CONTROLLER_13,
-			CONTROLLER_14,
-			CONTROLLER_15,
+			GAMEPAD_0,
+			GAMEPAD_1,
+			GAMEPAD_2,
+			GAMEPAD_3,
+			GAMEPAD_4,
+			GAMEPAD_5,
+			GAMEPAD_6,
+			GAMEPAD_7,
+			GAMEPAD_8,
+			GAMEPAD_9,
+			GAMEPAD_10,
+			GAMEPAD_11,
+			GAMEPAD_12,
+			GAMEPAD_13,
+			GAMEPAD_14,
+			GAMEPAD_15,
 			COUNT
 		};
 	}

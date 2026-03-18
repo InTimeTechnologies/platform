@@ -2,16 +2,96 @@
 
 namespace it {
 	namespace platform {
+		// class Gamepad
+
+		// Object | public
+
+		// Constructor / Destructor
+		Gamepad::Gamepad(GamepadCode gamepadCode) : code(gamepadCode) {
+			// Left empty intentionally
+			// Properties defined in header
+		}
+
+		// Getters
+		GamepadCode Gamepad::getCode() const {
+			return code;
+		}
+		bool Gamepad::getConnected() const {
+			return connected;
+		}
+		const GamepadButton& Gamepad::getButtonA() const {
+			return buttonA;
+		}
+		const GamepadButton& Gamepad::getButtonB() const {
+			return buttonB;
+		}
+		const GamepadButton& Gamepad::getButtonX() const {
+			return buttonX;
+		}
+		const GamepadButton& Gamepad::getButtonY() const {
+			return buttonY;
+		}
+		const GamepadButton& Gamepad::getButtonLeftBumper() const {
+			return buttonLeftBumper;
+		}
+		const GamepadButton& Gamepad::getButtonRightBumper() const {
+			return buttonRightBumper;
+		}
+		const GamepadButton& Gamepad::getButtonBack() const {
+			return buttonBack;
+		}
+		const GamepadButton& Gamepad::getButtonStart() const {
+			return buttonStart;
+		}
+		const GamepadButton& Gamepad::getButtonGuide() const {
+			return buttonGuide;
+		}
+		const GamepadButton& Gamepad::getButtonLeftThumb() const {
+			return buttonLeftThumb;
+		}
+		const GamepadButton& Gamepad::getButtonRightThumb() const {
+			return buttonRightThumb;
+		}
+		const GamepadButton& Gamepad::getButtonDpadUp() const {
+			return buttonDpadUp;
+		}
+		const GamepadButton& Gamepad::getButtonDpadRight() const {
+			return buttonDpadRight;
+		}
+		const GamepadButton& Gamepad::getButtonDpadDown() const {
+			return buttonDpadDown;
+		}
+		const GamepadButton& Gamepad::getButtonDpadLeft() const {
+			return buttonDpadLeft;
+		}
+		
+		const GamepadAxis& Gamepad::getAxisLeftX() const {
+			return axisLeftX;
+		}
+		const GamepadAxis& Gamepad::getAxisLeftY() const {
+			return axisLeftY;
+		}
+		const GamepadAxis& Gamepad::getAxisRightX() const {
+			return axisRightX;
+		}
+		const GamepadAxis& Gamepad::getAxisRightY() const {
+			return axisRightY;
+		}
+		const GamepadAxis& Gamepad::getAxisLeftTrigger() const {
+			return axisLeftTrigger;
+		}
+		const GamepadAxis& Gamepad::getAxisRightTrigger() const {
+			return axisRightTrigger;
+		}
+
+		std::string Gamepad::getName() const {
+			return name;
+		}
+
+
+		// Functions
 		void Gamepad::feedConnected(bool connected) {
-			bool connectionChanged = this->connected == connected;
-			if (!connectionChanged)
-				return;
-
 			this->connected = connected;
-			reset();
-
-			if (static_cast<bool>(onConnectionChange))
-				onConnectionChange(connected);
 		}
 		void Gamepad::feedEvent(GamepadButtonCode buttonCode, GamepadButtonAction action) {
 			switch (buttonCode) {

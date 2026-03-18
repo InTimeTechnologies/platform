@@ -138,12 +138,12 @@ namespace it {
 			}
 		}
 		std::string to_string(const Key& key) {
-			std::string keyCode =        "keyCode      = " + to_string(key.keyCode) + "\n";
-			std::string justPressed =    "justPressed  = " + key.justPressed ? "true\n" : "false\n";
-			std::string repeat =         "repeat       = " + key.repeat ? "true\n" : "false\n";
-			std::string justReleased =   "justReleased = " + key.justReleased ? "true\n" : "false\n";
-			std::string pressed =        "pressed      = " + key.pressed ? "true\n" : "false\n";
-			std::string description =    "description  = " + key.description;
+			std::string keyCode =        std::string("keyCode      = ") + to_string(key.keyCode) + "\n";
+			std::string justPressed =    std::string("justPressed  = ") + std::string(key.justPressed ? "true\n" : "false\n");
+			std::string repeat =         std::string("repeat       = ") + std::string(key.repeat ? "true\n" : "false\n");
+			std::string justReleased =   std::string("justReleased = ") + std::string(key.justReleased ? "true\n" : "false\n");
+			std::string pressed =        std::string("pressed      = ") + std::string(key.pressed ? "true\n" : "false\n");
+			std::string description =    std::string("description  = ") + key.description;
 			return keyCode + justPressed + repeat + justReleased + pressed + description;
 		}
 		std::string to_string(const KeyEvent& keyEvent) {
