@@ -4,14 +4,14 @@
 #include <string>
 
 // Dependencies | it::platform
-#include "GamepadButtonCode.h"
-#include "GamepadButtonAction.h"
+#include "JoystickButtonCode.h"
+#include "JoystickButtonAction.h"
 
 namespace it {
 	namespace platform {
-		struct GamepadButton {
+		struct JoystickButton {
 			// Properties
-			GamepadButtonCode buttonCode{ GamepadButtonCode::UNKNOWN };
+			JoystickButtonCode buttonCode{ JoystickButtonCode::UNKNOWN };
 			bool justPressed{ false };
 			bool justReleased{ false };
 			bool pressed{ false };
@@ -19,7 +19,7 @@ namespace it {
 	
 			// Functions
 			bool inTransientState() const;
-			void feedAction(GamepadButtonAction action);
+			void feedAction(JoystickButtonAction action);
 			void reset();
 			void resetTransientState();
 			void resetJustPressed();

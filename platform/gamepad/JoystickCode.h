@@ -1,0 +1,41 @@
+#pragma once
+
+namespace it {
+	namespace platform {
+		enum class JoystickCode : int {
+			UNKNOWN = -1,
+			JOYSTICK_0,
+			JOYSTICK_1,
+			JOYSTICK_2,
+			JOYSTICK_3,
+			JOYSTICK_4,
+			JOYSTICK_5,
+			JOYSTICK_6,
+			JOYSTICK_7,
+			JOYSTICK_8,
+			JOYSTICK_9,
+			JOYSTICK_10,
+			JOYSTICK_11,
+			JOYSTICK_12,
+			JOYSTICK_13,
+			JOYSTICK_14,
+			JOYSTICK_15,
+			JOYSTICK_16,
+			JOYSTICK_17,
+			JOYSTICK_18,
+			JOYSTICK_19,
+			JOYSTICK_20,
+			JOYSTICK_21,
+			JOYSTICK_22,
+			JOYSTICK_23,
+			JOYSTICK_24,
+			JOYSTICK_25,
+			JOYSTICK_26,
+			JOYSTICK_27,
+			JOYSTICK_28,
+			JOYSTICK_29,
+			JOYSTICK_30,
+			JOYSTICK_31
+		};
+	}
+}

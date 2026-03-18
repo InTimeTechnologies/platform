@@ -2,8 +2,8 @@
 
 namespace it {
 	namespace platform {
-		enum class GamepadButtonAction : unsigned int {
-			UNKNOWN,
+		enum class JoystickButtonAction : int {
+			UNKNOWN = -1,
 			PRESSED,
 			RELEASED
 		};

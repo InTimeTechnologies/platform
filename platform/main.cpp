@@ -5,9 +5,6 @@
 
 // Dependencies it::platform
 #include "Platform.h"
-#include "window/Window.h"
-#include "keyboard/to_string.h"
-#include "gamepad/GamepadInput.h"
 
 void print(const it::platform::Window& window) {
 	std::cout << "title: " << window.getTitle() << std::endl;
@@ -18,13 +15,8 @@ void print(const it::platform::Window& window) {
 }
 
 void testGamepad(it::platform::Platform& platform) {
-	it::platform::Gamepad& gamepad = platform.gamepadInput.getGamepad(it::platform::GamepadCode::GAMEPAD_0);
-	if (gamepad.getButtonA().pressed) {
-		std::cout << "pressed" << std::endl;
-	}
-	else {
-		std::cout << "released" << std::endl;
-	}
+	it::platform::Joystick& gamepad = platform.gamepadInput.getGamepad(it::platform::JoystickCode::JOYSTICK_0);
+	std::cout << (gamepad.getButtonA().pressed ? "pressed" : "released") << std::endl;
 }
 
 int testWindowing() {

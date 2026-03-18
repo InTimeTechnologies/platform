@@ -2,8 +2,8 @@
 
 namespace it {
 	namespace platform {
-		enum class GamepadButtonCode : unsigned int {
-			UNKNOWN,
+		enum class JoystickButtonCode : int {
+			UNKNOWN = -1,
 			A,
 			B,
 			X,

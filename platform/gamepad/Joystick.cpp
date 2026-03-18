@@ -1,143 +1,143 @@
-#include "Gamepad.h"
+#include "Joystick.h"
 
 namespace it {
 	namespace platform {
-		// class Gamepad
+		// class Joystick
 
 		// Object | public
 
 		// Constructor / Destructor
-		Gamepad::Gamepad(GamepadCode gamepadCode) : code(gamepadCode) {
+		Joystick::Joystick(JoystickCode gamepadCode) : code(gamepadCode) {
 			// Left empty intentionally
 			// Properties defined in header
 		}
 
 		// Getters
-		GamepadCode Gamepad::getCode() const {
+		JoystickCode Joystick::getCode() const {
 			return code;
 		}
-		bool Gamepad::getConnected() const {
+		bool Joystick::getConnected() const {
 			return connected;
 		}
-		const GamepadButton& Gamepad::getButtonA() const {
+		const JoystickButton& Joystick::getButtonA() const {
 			return buttonA;
 		}
-		const GamepadButton& Gamepad::getButtonB() const {
+		const JoystickButton& Joystick::getButtonB() const {
 			return buttonB;
 		}
-		const GamepadButton& Gamepad::getButtonX() const {
+		const JoystickButton& Joystick::getButtonX() const {
 			return buttonX;
 		}
-		const GamepadButton& Gamepad::getButtonY() const {
+		const JoystickButton& Joystick::getButtonY() const {
 			return buttonY;
 		}
-		const GamepadButton& Gamepad::getButtonLeftBumper() const {
+		const JoystickButton& Joystick::getButtonLeftBumper() const {
 			return buttonLeftBumper;
 		}
-		const GamepadButton& Gamepad::getButtonRightBumper() const {
+		const JoystickButton& Joystick::getButtonRightBumper() const {
 			return buttonRightBumper;
 		}
-		const GamepadButton& Gamepad::getButtonBack() const {
+		const JoystickButton& Joystick::getButtonBack() const {
 			return buttonBack;
 		}
-		const GamepadButton& Gamepad::getButtonStart() const {
+		const JoystickButton& Joystick::getButtonStart() const {
 			return buttonStart;
 		}
-		const GamepadButton& Gamepad::getButtonGuide() const {
+		const JoystickButton& Joystick::getButtonGuide() const {
 			return buttonGuide;
 		}
-		const GamepadButton& Gamepad::getButtonLeftThumb() const {
+		const JoystickButton& Joystick::getButtonLeftThumb() const {
 			return buttonLeftThumb;
 		}
-		const GamepadButton& Gamepad::getButtonRightThumb() const {
+		const JoystickButton& Joystick::getButtonRightThumb() const {
 			return buttonRightThumb;
 		}
-		const GamepadButton& Gamepad::getButtonDpadUp() const {
+		const JoystickButton& Joystick::getButtonDpadUp() const {
 			return buttonDpadUp;
 		}
-		const GamepadButton& Gamepad::getButtonDpadRight() const {
+		const JoystickButton& Joystick::getButtonDpadRight() const {
 			return buttonDpadRight;
 		}
-		const GamepadButton& Gamepad::getButtonDpadDown() const {
+		const JoystickButton& Joystick::getButtonDpadDown() const {
 			return buttonDpadDown;
 		}
-		const GamepadButton& Gamepad::getButtonDpadLeft() const {
+		const JoystickButton& Joystick::getButtonDpadLeft() const {
 			return buttonDpadLeft;
 		}
 		
-		const GamepadAxis& Gamepad::getAxisLeftX() const {
+		const JoystickAxis& Joystick::getAxisLeftX() const {
 			return axisLeftX;
 		}
-		const GamepadAxis& Gamepad::getAxisLeftY() const {
+		const JoystickAxis& Joystick::getAxisLeftY() const {
 			return axisLeftY;
 		}
-		const GamepadAxis& Gamepad::getAxisRightX() const {
+		const JoystickAxis& Joystick::getAxisRightX() const {
 			return axisRightX;
 		}
-		const GamepadAxis& Gamepad::getAxisRightY() const {
+		const JoystickAxis& Joystick::getAxisRightY() const {
 			return axisRightY;
 		}
-		const GamepadAxis& Gamepad::getAxisLeftTrigger() const {
+		const JoystickAxis& Joystick::getAxisLeftTrigger() const {
 			return axisLeftTrigger;
 		}
-		const GamepadAxis& Gamepad::getAxisRightTrigger() const {
+		const JoystickAxis& Joystick::getAxisRightTrigger() const {
 			return axisRightTrigger;
 		}
 
-		std::string Gamepad::getName() const {
+		std::string Joystick::getName() const {
 			return name;
 		}
 
 
 		// Functions
-		void Gamepad::feedConnected(bool connected) {
+		void Joystick::feedConnected(bool connected) {
 			this->connected = connected;
 		}
-		void Gamepad::feedEvent(GamepadButtonCode buttonCode, GamepadButtonAction action) {
+		void Joystick::feedEvent(JoystickButtonCode buttonCode, JoystickButtonAction action) {
 			switch (buttonCode) {
-				case GamepadButtonCode::A:
+				case JoystickButtonCode::A:
 					buttonA.feedAction(action);
 					break;
-				case GamepadButtonCode::B:
+				case JoystickButtonCode::B:
 					buttonB.feedAction(action);
 					break;
-				case GamepadButtonCode::X:
+				case JoystickButtonCode::X:
 					buttonX.feedAction(action);
 					break;
-				case GamepadButtonCode::Y:
+				case JoystickButtonCode::Y:
 					buttonY.feedAction(action);
 					break;
-				case GamepadButtonCode::LEFT_BUMPER:
+				case JoystickButtonCode::LEFT_BUMPER:
 					buttonLeftBumper.feedAction(action);
 					break;
-				case GamepadButtonCode::RIGHT_BUMPER:
+				case JoystickButtonCode::RIGHT_BUMPER:
 					buttonRightBumper.feedAction(action);
 					break;
-				case GamepadButtonCode::BACK:
+				case JoystickButtonCode::BACK:
 					buttonBack.feedAction(action);
 					break;
-				case GamepadButtonCode::START:
+				case JoystickButtonCode::START:
 					buttonStart.feedAction(action);
 					break;
-				case GamepadButtonCode::LEFT_THUMB:
+				case JoystickButtonCode::LEFT_THUMB:
 					buttonLeftThumb.feedAction(action);
 					break;
-				case GamepadButtonCode::RIGHT_THUMB:
+				case JoystickButtonCode::RIGHT_THUMB:
 					buttonRightThumb.feedAction(action);
 					break;
-				case GamepadButtonCode::DPAD_UP:
+				case JoystickButtonCode::DPAD_UP:
 					buttonDpadUp.feedAction(action);
 					break;
-				case GamepadButtonCode::DPAD_RIGHT:
+				case JoystickButtonCode::DPAD_RIGHT:
 					buttonDpadRight.feedAction(action);
 					break;
-				case GamepadButtonCode::DPAD_DOWN:
+				case JoystickButtonCode::DPAD_DOWN:
 					buttonDpadDown.feedAction(action);
 					break;
-				case GamepadButtonCode::DPAD_LEFT:
+				case JoystickButtonCode::DPAD_LEFT:
 					buttonDpadLeft.feedAction(action);
 					break;
-				case GamepadButtonCode::UNKNOWN:
+				case JoystickButtonCode::UNKNOWN:
 				default:
 					break;
 			}
@@ -145,31 +145,31 @@ namespace it {
 			if (static_cast<bool>(onGamepadButton))
 				onGamepadButton(buttonCode, action);
 		}
-		void Gamepad::feedEvent(GamepadAxisCode axisCode, float value) {
+		void Joystick::feedEvent(JoystickAxisCode axisCode, float value) {
 			switch (axisCode) {
-				case GamepadAxisCode::LEFT_X:
+				case JoystickAxisCode::LEFT_X:
 					axisLeftX.value = value;
 					break;
-				case GamepadAxisCode::LEFT_Y:
+				case JoystickAxisCode::LEFT_Y:
 					axisLeftY.value = value;
 					break;
-				case GamepadAxisCode::RIGHT_X:
+				case JoystickAxisCode::RIGHT_X:
 					axisRightX.value = value;
 					break;
-				case GamepadAxisCode::RIGHT_Y:
+				case JoystickAxisCode::RIGHT_Y:
 					axisRightY.value = value;
 					break;
-					case GamepadAxisCode::LEFT_TRIGGER:
+					case JoystickAxisCode::LEFT_TRIGGER:
 					axisLeftTrigger.value = value;
 					break;
-				case GamepadAxisCode::RIGHT_TRIGGER:
+				case JoystickAxisCode::RIGHT_TRIGGER:
 					axisRightTrigger.value = value;
 					break;
 				default:
 					break;
 			}
 		}
-		void Gamepad::reset() {
+		void Joystick::reset() {
 			buttonA.reset();
 			buttonB.reset();
 			buttonX.reset();
@@ -196,7 +196,7 @@ namespace it {
 			axisLeftTrigger.reset();
 			axisRightTrigger.reset();
 		}
-		void Gamepad::resetTransientState() {
+		void Joystick::resetTransientState() {
 			buttonA.resetTransientState();
 			buttonB.resetTransientState();
 			buttonX.resetTransientState();

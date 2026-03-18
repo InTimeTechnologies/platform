@@ -1,43 +1,43 @@
-#include "GamepadButton.h"
+#include "JoystickButton.h"
 
 namespace it {
 	namespace platform {
-		// struct GamepadButton
+		// struct JoystickButton
 	
 		// Functions
-		bool GamepadButton::inTransientState() const {
+		bool JoystickButton::inTransientState() const {
 			return justPressed || justReleased;
 		}
-		void GamepadButton::feedAction(GamepadButtonAction action) {
+		void JoystickButton::feedAction(JoystickButtonAction action) {
 			switch (action) {
-				case GamepadButtonAction::PRESSED:
+				case JoystickButtonAction::PRESSED:
 					if (!pressed)
 						justPressed = true;
 					pressed = true;
 					break;
-				case GamepadButtonAction::RELEASED:
+				case JoystickButtonAction::RELEASED:
 					if (pressed)
 						justReleased = true;
 					pressed = false;
 					break;
-				case GamepadButtonAction::UNKNOWN:
+				case JoystickButtonAction::UNKNOWN:
 				default:
 					break;
 			}
 		}
-		void GamepadButton::reset() {
+		void JoystickButton::reset() {
 			justPressed = false;
 			justReleased = false;
 			pressed = false;
 		}
-		void GamepadButton::resetTransientState() {
+		void JoystickButton::resetTransientState() {
 			justPressed = false;
 			justReleased = false;
 		}
-		void GamepadButton::resetJustPressed() {
+		void JoystickButton::resetJustPressed() {
 			justPressed = false;
 		}
-		void GamepadButton::resetJustReleased() {
+		void JoystickButton::resetJustReleased() {
 			justReleased = false;
 		}
 	}

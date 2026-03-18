@@ -4,13 +4,13 @@
 #include <string>
 
 // Dependencies | it::platform
-#include "GamepadAxisCode.h"
+#include "JoystickAxisCode.h"
 
 namespace it {
 	namespace platform {
-		struct GamepadAxis {
+		struct JoystickAxis {
 			// Properties
-			GamepadAxisCode axisCode{ GamepadAxisCode::UNKNOWN };
+			JoystickAxisCode axisCode{ JoystickAxisCode::UNKNOWN };
 			float value{ 0.0f };
 			std::string description{};
 	
