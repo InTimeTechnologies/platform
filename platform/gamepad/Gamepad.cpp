@@ -1,8 +1,8 @@
-#include "Joystick.h"
+#include "Gamepad.h"
 
 namespace it {
 	namespace platform {
-		void Joystick::feedConnected(bool connected) {
+		void Gamepad::feedConnected(bool connected) {
 			bool connectionChanged = this->connected == connected;
 			if (!connectionChanged)
 				return;
@@ -13,83 +13,83 @@ namespace it {
 			if (static_cast<bool>(onConnectionChange))
 				onConnectionChange(connected);
 		}
-		void Joystick::feedEvent(JoystickButtonCode buttonCode, JoystickButtonAction action) {
+		void Gamepad::feedEvent(GamepadButtonCode buttonCode, GamepadButtonAction action) {
 			switch (buttonCode) {
-				case JoystickButtonCode::A:
+				case GamepadButtonCode::A:
 					buttonA.feedAction(action);
 					break;
-				case JoystickButtonCode::B:
+				case GamepadButtonCode::B:
 					buttonB.feedAction(action);
 					break;
-				case JoystickButtonCode::X:
+				case GamepadButtonCode::X:
 					buttonX.feedAction(action);
 					break;
-				case JoystickButtonCode::Y:
+				case GamepadButtonCode::Y:
 					buttonY.feedAction(action);
 					break;
-				case JoystickButtonCode::LEFT_BUMPER:
+				case GamepadButtonCode::LEFT_BUMPER:
 					buttonLeftBumper.feedAction(action);
 					break;
-				case JoystickButtonCode::RIGHT_BUMPER:
+				case GamepadButtonCode::RIGHT_BUMPER:
 					buttonRightBumper.feedAction(action);
 					break;
-				case JoystickButtonCode::BACK:
+				case GamepadButtonCode::BACK:
 					buttonBack.feedAction(action);
 					break;
-				case JoystickButtonCode::START:
+				case GamepadButtonCode::START:
 					buttonStart.feedAction(action);
 					break;
-				case JoystickButtonCode::LEFT_THUMB:
+				case GamepadButtonCode::LEFT_THUMB:
 					buttonLeftThumb.feedAction(action);
 					break;
-				case JoystickButtonCode::RIGHT_THUMB:
+				case GamepadButtonCode::RIGHT_THUMB:
 					buttonRightThumb.feedAction(action);
 					break;
-				case JoystickButtonCode::DPAD_UP:
+				case GamepadButtonCode::DPAD_UP:
 					buttonDpadUp.feedAction(action);
 					break;
-				case JoystickButtonCode::DPAD_RIGHT:
+				case GamepadButtonCode::DPAD_RIGHT:
 					buttonDpadRight.feedAction(action);
 					break;
-				case JoystickButtonCode::DPAD_DOWN:
+				case GamepadButtonCode::DPAD_DOWN:
 					buttonDpadDown.feedAction(action);
 					break;
-				case JoystickButtonCode::DPAD_LEFT:
+				case GamepadButtonCode::DPAD_LEFT:
 					buttonDpadLeft.feedAction(action);
 					break;
-				case JoystickButtonCode::UNKNOWN:
+				case GamepadButtonCode::UNKNOWN:
 				default:
 					break;
 			}
 
-			if (static_cast<bool>(onJoystickButton))
-				onJoystickButton(buttonCode, action);
+			if (static_cast<bool>(onGamepadButton))
+				onGamepadButton(buttonCode, action);
 		}
-		void Joystick::feedEvent(JoystickAxisCode axisCode, float value) {
+		void Gamepad::feedEvent(GamepadAxisCode axisCode, float value) {
 			switch (axisCode) {
-				case JoystickAxisCode::LEFT_X:
+				case GamepadAxisCode::LEFT_X:
 					axisLeftX.value = value;
 					break;
-				case JoystickAxisCode::LEFT_Y:
+				case GamepadAxisCode::LEFT_Y:
 					axisLeftY.value = value;
 					break;
-				case JoystickAxisCode::RIGHT_X:
+				case GamepadAxisCode::RIGHT_X:
 					axisRightX.value = value;
 					break;
-				case JoystickAxisCode::RIGHT_Y:
+				case GamepadAxisCode::RIGHT_Y:
 					axisRightY.value = value;
 					break;
-					case JoystickAxisCode::LEFT_TRIGGER:
+					case GamepadAxisCode::LEFT_TRIGGER:
 					axisLeftTrigger.value = value;
 					break;
-				case JoystickAxisCode::RIGHT_TRIGGER:
+				case GamepadAxisCode::RIGHT_TRIGGER:
 					axisRightTrigger.value = value;
 					break;
 				default:
 					break;
 			}
 		}
-		void Joystick::reset() {
+		void Gamepad::reset() {
 			buttonA.reset();
 			buttonB.reset();
 			buttonX.reset();
@@ -116,7 +116,7 @@ namespace it {
 			axisLeftTrigger.reset();
 			axisRightTrigger.reset();
 		}
-		void Joystick::resetTransientState() {
+		void Gamepad::resetTransientState() {
 			buttonA.resetTransientState();
 			buttonB.resetTransientState();
 			buttonX.resetTransientState();

@@ -13,8 +13,8 @@
 #include "keyboard/KeyboardInput.h"
 #endif
 
-#if defined(JOYSTICK)
-#include "joystick/JoystickInput.h"
+#if defined(GAMEPAD)
+#include "gamepad/GamepadInput.h"
 #endif
 
 namespace it {
@@ -45,8 +45,8 @@ namespace it {
 				#if defined(KEYBOARD)
 				KeyboardInput keyboardInput{};
 				#endif
-				#if defined(JOYSTICK)
-				JoystickInput joystickInput{};
+				#if defined(GAMEPAD)
+				GamepadInput gamepadInput{};
 				#endif
 
 				// Constructor / Destructor

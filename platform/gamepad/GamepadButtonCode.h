@@ -2,7 +2,7 @@
 
 namespace it {
 	namespace platform {
-		enum class JoystickButtonCode : size_t {
+		enum class GamepadButtonCode : unsigned int {
 			UNKNOWN,
 			A,
 			B,

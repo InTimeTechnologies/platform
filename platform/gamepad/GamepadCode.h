@@ -2,7 +2,7 @@
 
 namespace it {
 	namespace platform {
-		enum class JoystickCode : unsigned int {
+		enum class GamepadCode : unsigned int {
 			CONTROLLER_0,
 			CONTROLLER_1,
 			CONTROLLER_2,

@@ -2,7 +2,7 @@
 
 namespace it {
 	namespace platform {
-		enum class JoystickButtonAction : unsigned int {
+		enum class GamepadButtonAction : unsigned int {
 			UNKNOWN,
 			PRESSED,
 			RELEASED
