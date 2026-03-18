@@ -26,13 +26,13 @@ namespace it {
 			size_t i = getJoystickIndex(joystickCode);
 			joysticks[i].connected = connected;
 		}
-		void JoystickInput::feedAction(JoystickCode joystickCode, JoystickButtonCode joystickButtonCode, JoystickButton::Action action) {
+		void JoystickInput::feedAction(JoystickCode joystickCode, JoystickButtonCode joystickButtonCode, JoystickButtonAction action) {
 			size_t i = getJoystickIndex(joystickCode);
-			joysticks[i].feedAction(joystickButtonCode, action);
+			joysticks[i].feedEvent(joystickButtonCode, action);
 		}
 		void JoystickInput::feedAction(JoystickCode joystickCode, JoystickAxisCode joystickAxisCode, float value) {
 			size_t i = getJoystickIndex(joystickCode);
-			joysticks[i].feedAction(joystickAxisCode, value);
+			joysticks[i].feedEvent(joystickAxisCode, value);
 		}
 		void JoystickInput::reset() {
 			for (size_t i = 0; i < joysticks.size(); i++)

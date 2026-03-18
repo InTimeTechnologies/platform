@@ -2,11 +2,19 @@
 
 namespace it {
 	namespace platform {
-		void Joystick::feedAction(bool connected) {
+		void Joystick::feedConnected(bool connected) {
+			bool connectionChanged = this->connected == connected;
+			if (!connectionChanged)
+				return;
+
 			this->connected = connected;
+			reset();
+
+			if (static_cast<bool>(onConnectionChange))
+				onConnectionChange(connected);
 		}
-		void Joystick::feedAction(JoystickButtonCode joystickButtonCode, JoystickButton::Action action) {
-			switch (joystickButtonCode) {
+		void Joystick::feedEvent(JoystickButtonCode buttonCode, JoystickButtonAction action) {
+			switch (buttonCode) {
 				case JoystickButtonCode::A:
 					buttonA.feedAction(action);
 					break;
@@ -53,9 +61,12 @@ namespace it {
 				default:
 					break;
 			}
+
+			if (static_cast<bool>(onJoystickButton))
+				onJoystickButton(buttonCode, action);
 		}
-		void Joystick::feedAction(JoystickAxisCode joystickAxisCode, float value) {
-			switch (joystickAxisCode) {
+		void Joystick::feedEvent(JoystickAxisCode axisCode, float value) {
+			switch (axisCode) {
 				case JoystickAxisCode::LEFT_X:
 					axisLeftX.value = value;
 					break;

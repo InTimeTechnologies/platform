@@ -2,7 +2,7 @@
 
 namespace it {
 	namespace platform {
-		enum class JoystickAxisCode : size_t {
+		enum class JoystickAxisCode : unsigned int {
 			UNKNOWN,
 			LEFT_X,
 			LEFT_Y,

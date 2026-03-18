@@ -40,31 +40,20 @@ int testWindowing() {
 	bool exit = false;
 	window.onClose = [&exit]() { exit = true; };
 	
-	std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
-	std::chrono::steady_clock::time_point currentTime = startTime;
-	std::chrono::steady_clock::time_point stopTime = startTime + std::chrono::seconds(10);
-	std::chrono::nanoseconds sleepTime = std::chrono::milliseconds(16);
-	
 	// Loop
 	std::cout << "Running loop." << std::endl;
-	while (!exit && currentTime < stopTime) {
+	while (!exit) {
 		platform.update();
 		window.makeContextCurrent();
 		window.swapBuffers();
 
 		for (const it::platform::KeyEvent& keyEvent : window.getKeyEventList()) {
-			std::cout << it::platform::to_string(keyEvent) << std::endl;
-
 			if (keyEvent.keyCode == it::platform::KeyCode::ENTER && keyEvent.action == it::platform::KeyAction::PRESS)
 				window.setSize(500, 500);
 	
 			if (keyEvent.keyCode == it::platform::KeyCode::ESCAPE && keyEvent.action == it::platform::KeyAction::PRESS)
 				exit = true;
 		}
-
-
-		std::this_thread::sleep_for(sleepTime);
-		currentTime = std::chrono::steady_clock::now();
 	}
 	std::cout << "Terminated loop." << std::endl;
 

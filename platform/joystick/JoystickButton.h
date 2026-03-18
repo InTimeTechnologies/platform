@@ -3,19 +3,13 @@
 // Dependencies | std
 #include <string>
 
-// Dependencies | in_time_engine | input | joystick
+// Dependencies | it::platform
 #include "JoystickButtonCode.h"
+#include "JoystickButtonAction.h"
 
 namespace it {
 	namespace platform {
 		struct JoystickButton {
-			// Enums
-			enum class Action : size_t {
-				UNKNOWN,
-				PRESSED,
-				RELEASED
-			};
-			
 			// Properties
 			JoystickButtonCode buttonCode{ JoystickButtonCode::UNKNOWN };
 			bool justPressed{ false };
@@ -25,7 +19,7 @@ namespace it {
 	
 			// Functions
 			bool inTransientState() const;
-			void feedAction(Action action);
+			void feedAction(JoystickButtonAction action);
 			void reset();
 			void resetTransientState();
 			void resetJustPressed();

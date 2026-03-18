@@ -12,7 +12,7 @@ namespace it {
 			RIGHT_BUMPER,
 			BACK,
 			START,
-			//GUIDE,
+			GUIDE,
 			LEFT_THUMB,
 			RIGHT_THUMB,
 			DPAD_UP,

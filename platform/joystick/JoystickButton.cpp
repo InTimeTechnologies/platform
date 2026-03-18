@@ -8,17 +8,17 @@ namespace it {
 		bool JoystickButton::inTransientState() const {
 			return justPressed || justReleased;
 		}
-		void JoystickButton::feedAction(Action action) {
+		void JoystickButton::feedAction(JoystickButtonAction action) {
 			switch (action) {
-				case Action::PRESSED:
+				case JoystickButtonAction::PRESSED:
 					justPressed = true;
 					pressed = true;
 					break;
-				case Action::RELEASED:
+				case JoystickButtonAction::RELEASED:
 					justReleased = true;
 					pressed = false;
 					break;
-				case Action::UNKNOWN:
+				case JoystickButtonAction::UNKNOWN:
 				default:
 					break;
 			}

@@ -3,7 +3,7 @@
 // Dependencies | std
 #include <string>
 
-// Dependencies | int_time_engine | input | joystick
+// Dependencies | it::platform
 #include "JoystickAxisCode.h"
 
 namespace it {

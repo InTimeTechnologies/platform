@@ -9,11 +9,13 @@
 namespace it {
 	namespace platform {
 		class JoystickInput {
+			// Friends
+			friend class Platform;
+
 			// Object
 			private:
 				// Properties
 				std::array<Joystick, static_cast<size_t>(JoystickCode::COUNT)> joysticks{
-					Joystick{ JoystickCode::UNKOWN },
 					Joystick{ JoystickCode::CONTROLLER_0 },
 					Joystick{ JoystickCode::CONTROLLER_1 },
 					Joystick{ JoystickCode::CONTROLLER_2 },
@@ -40,7 +42,7 @@ namespace it {
 				size_t getJoystickIndex(JoystickCode joystickCode) const;
 	
 				void feedAction(JoystickCode joystickCode, bool connected);
-				void feedAction(JoystickCode joystickCode, JoystickButtonCode joystickButtoneCode, JoystickButton::Action action);
+				void feedAction(JoystickCode joystickCode, JoystickButtonCode joystickButtoneCode, JoystickButtonAction action);
 				void feedAction(JoystickCode joystickCode, JoystickAxisCode joystickAxisCode, float value);
 				void reset();
 				void resetTransientStates();
