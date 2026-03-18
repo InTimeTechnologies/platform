@@ -153,6 +153,7 @@ namespace it {
 					int buttonCount = 0;
     				const unsigned char* buttons = glfwGetJoystickButtons(static_cast<int>(gamepad.code), &buttonCount);
 
+					if (buttonCount >= GLFW_GAMEPAD_BUTTON_DPAD_LEFT) {
 					// Joystick axis values forwarding
 					gamepad.buttonA.feedAction(buttons[GLFW_GAMEPAD_BUTTON_A] == GLFW_PRESS ? GamepadButtonAction::PRESSED : GamepadButtonAction::RELEASED);
 					gamepad.buttonB.feedAction(buttons[GLFW_GAMEPAD_BUTTON_B] == GLFW_PRESS ? GamepadButtonAction::PRESSED : GamepadButtonAction::RELEASED);
@@ -173,11 +174,13 @@ namespace it {
 					gamepad.buttonDpadRight.feedAction(buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT] == GLFW_PRESS ? GamepadButtonAction::PRESSED : GamepadButtonAction::RELEASED);
 					gamepad.buttonDpadDown.feedAction(buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN] == GLFW_PRESS ? GamepadButtonAction::PRESSED : GamepadButtonAction::RELEASED);
 					gamepad.buttonDpadLeft.feedAction(buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT] == GLFW_PRESS ? GamepadButtonAction::PRESSED : GamepadButtonAction::RELEASED);
+					}
 
 					// Joystick axis forwarding
 					int axisCount = 0;
     				const float* axes = glfwGetJoystickAxes(static_cast<int>(gamepad.code), &axisCount);
 	
+					if (axisCount >= GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER) {
 					gamepad.axisLeftX.value = axes[GLFW_GAMEPAD_AXIS_LEFT_X];
 					gamepad.axisLeftY.value = axes[GLFW_GAMEPAD_AXIS_LEFT_Y];
 
@@ -186,6 +189,7 @@ namespace it {
 
 					gamepad.axisLeftTrigger.value = axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER];
 					gamepad.axisRightTrigger.value = axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER];
+					}
 				}
 			}
 			#endif
