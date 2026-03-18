@@ -14,3 +14,5 @@ cmake -S ./glfw -B ./glfw/build \
 -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=$PWD/glfw/build/lib \
 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=$PWD/glfw/build/bin
 cmake --build glfw/build
+ln -s libglfw.so.3.5 ./glfw/build/lib/libglfw.so.3
+ln -s libglfw.so.3.5 ./glfw/build/lib/libglfw.so
