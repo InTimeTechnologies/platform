@@ -8,8 +8,8 @@ namespace it {
 	
 		// Constructor / Destructor
 		MouseInput::MouseInput() {
+			mouseButtons.resize(8);
 			size_t i = 0;
-			mouseButtons[i++] = MouseButton{ MouseButtonCode::UNKNOWN, false, false, false, "unknown" };
 			mouseButtons[i++] = MouseButton{ MouseButtonCode::BUTTON_CODE_1, false, false, false, "left button" };
 			mouseButtons[i++] = MouseButton{ MouseButtonCode::BUTTON_CODE_2, false, false, false, "right button" };
 			mouseButtons[i++] = MouseButton{ MouseButtonCode::BUTTON_CODE_3, false, false, false, "middle button" };
@@ -24,28 +24,22 @@ namespace it {
 		const std::forward_list<MouseButton*>& MouseInput::getMouseButtonsToReset() const {
 			return mouseButtonsInTransientState;
 		}
-		const std::array<MouseButton, static_cast<size_t>(MouseButtonCode::COUNT)>& MouseInput::getMouseButtons() const {
+		const std::vector<MouseButton>& MouseInput::getMouseButtons() const {
 			return mouseButtons;
 		}
-		
 		const MouseButton& MouseInput::getMouseButton(MouseButtonCode mouseButtonCode) const {
-			size_t i = getMouseButtonIndex(mouseButtonCode);
-			return mouseButtons[i];
-		}
-		size_t MouseInput::getMouseButtonIndex(MouseButtonCode mouseButtonCode) const {
 			size_t i = static_cast<size_t>(mouseButtonCode);
-			size_t count = static_cast<size_t>(MouseButtonCode::COUNT);
-			return i < count ? i : count;
+			return mouseButtons[i];
 		}
 	
 		// Functions
-		void MouseInput::feedEvent(MouseButtonEvent mouseButtonEvent) {
-			size_t i = getMouseButtonIndex(mouseButtonEvent.mouseButtonCode);
+		void MouseInput::feedEvent(MouseButtonCode code, MouseButtonAction action) {
+			size_t i = static_cast<size_t>(code);
 	
 			if (!mouseButtons[i].inTransientState())
 				mouseButtonsInTransientState.push_front(&mouseButtons[i]);
 	
-			mouseButtons[i].feedAction(mouseButtonEvent.action);
+			mouseButtons[i].feedAction(action);
 		}
 		void MouseInput::reset() {
 			for (size_t i = 0; i < mouseButtons.size(); i++)

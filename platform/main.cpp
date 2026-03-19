@@ -60,14 +60,12 @@ int testWindowing() {
 
 		testGamepad(platform);
 
-		for (const it::platform::KeyEvent& keyEvent : window.getKeyEventList()) {
-
-			if (keyEvent.keyCode == it::platform::KeyCode::ENTER && keyEvent.action == it::platform::KeyAction::PRESS)
-				window.setSize(500, 500);
-	
-			if (keyEvent.keyCode == it::platform::KeyCode::ESCAPE && keyEvent.action == it::platform::KeyAction::PRESS)
-				exit = true;
-		}
+		//for (const it::platform::KeyEvent& keyEvent : window.getKeyEventList()) {
+		//	if (keyEvent.keyCode == it::platform::KeyCode::ENTER && keyEvent.action == it::platform::KeyAction::PRESS)
+		//		window.setSize(500, 500);
+		//	if (keyEvent.keyCode == it::platform::KeyCode::ESCAPE && keyEvent.action == it::platform::KeyAction::PRESS)
+		//		exit = true;
+		//}
 	}
 	std::cout << "Terminated loop." << std::endl;
 

@@ -5,17 +5,11 @@
 
 // Dependencies | it
 #include "MouseButtonCode.h"
+#include "MouseButtonAction.h"
 
 namespace it {
 	namespace platform {
 		struct MouseButton {
-			// Enums
-			enum class Action {
-				UNKNOWN,
-				PRESS,
-				RELEASE
-			};
-	
 			// Properties
 			MouseButtonCode buttonCode{ MouseButtonCode::UNKNOWN };
 			bool pressed{ false };
@@ -25,7 +19,7 @@ namespace it {
 	
 			// Functions
 			bool inTransientState() const;
-			void feedAction(Action action);
+			void feedAction(MouseButtonAction action);
 			void reset();
 			void resetTransientState();
 			void resetJustPressed();

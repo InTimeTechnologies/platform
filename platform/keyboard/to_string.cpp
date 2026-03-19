@@ -146,12 +146,5 @@ namespace it {
 			std::string description =    std::string("description  = ") + key.description;
 			return keyCode + justPressed + repeat + justReleased + pressed + description;
 		}
-		std::string to_string(const KeyEvent& keyEvent) {
-			std::string keyCode = it::platform::to_string(keyEvent.keyCode) + "\n";
-			std::string scancode = std::to_string(keyEvent.scanCode) + "\n";
-			std::string action = it::platform::to_string(keyEvent.action) + "\n";
-			std::string modifier = std::to_string(keyEvent.modifier);
-			return keyCode + scancode + action + modifier;
-		}
 	}
 }

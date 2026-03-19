@@ -5,16 +5,11 @@
 #include <functional>
 #include <list>
 
-// Dependencies | it::platform
-#include <mouse/MouseButtonEvent.h>
-#include <keyboard/KeyEvent.h>
-
 namespace it {
 	namespace platform {
 		class Window {
 			// Friends
 			friend class Platform;
-			friend class WindowManager;
 
 			// Structs
 			struct Position {
@@ -68,9 +63,6 @@ namespace it {
 				std::string contextMajorVersion{};
 				std::string contextMinorVersion{};
 				std::string contextRevision{};
-
-				// Properties | key events
-				std::list<KeyEvent> keyEventList{};
 			
 			public:
 				// Properties
@@ -82,9 +74,6 @@ namespace it {
 				std::function<void()> onRefresh;
 				std::function<void(bool)> onMaximize;
 				std::function<void(float, float)> onScale;
-
-				std::function<void(KeyEvent keyEvent)> onKeyEvent;
-				std::function<void(MouseButtonEvent mouseButtonEvent)> onMouseButtonEvent;
 
 				// Constructor / Destructor
 				Window() = default;
@@ -128,9 +117,6 @@ namespace it {
 				int getContextMajorVersion() const;
 				int getContextMinorVersion() const;
 				int getContextRevision() const;
-
-				// Getters (key event list)
-				const std::list<KeyEvent>& getKeyEventList() const;
 				
 				// Setters
 				void setTitle(const std::string& title);
@@ -166,8 +152,6 @@ namespace it {
 				void feedVisible(bool visible);
 				void feedResizable(bool resizable);
 				void feedFocused(bool focused);
-
-				void feedKeyEvent(const KeyEvent& keyEvent);
 		};
 	}
 }

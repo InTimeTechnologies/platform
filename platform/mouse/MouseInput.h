@@ -2,10 +2,11 @@
 
 // Dependencies | std
 #include <array>
+#include <vector>
 #include <forward_list>
 
 // Dependencies | it
-#include "MouseButtonEvent.h"
+#include "MouseButton.h"
 
 namespace it {
 	namespace platform {
@@ -14,7 +15,7 @@ namespace it {
 			private:
 				// Properties
 				std::forward_list<MouseButton*> mouseButtonsInTransientState{};
-				std::array<MouseButton, static_cast<size_t>(MouseButtonCode::COUNT)> mouseButtons{};
+				std::vector<MouseButton> mouseButtons{};
 	
 			public:
 				// Constructor / Destructor
@@ -29,13 +30,11 @@ namespace it {
 	
 				// Getters
 				const std::forward_list<MouseButton*>& getMouseButtonsToReset() const;
-				const std::array<MouseButton, static_cast<size_t>(MouseButtonCode::COUNT)>& getMouseButtons() const;
-	
+				const std::vector<MouseButton>& getMouseButtons() const;
 				const MouseButton& getMouseButton(MouseButtonCode mouseButtonCode) const;
-				size_t getMouseButtonIndex(MouseButtonCode mouseButtonCode) const;
 	
 				// Functions
-				void feedEvent(MouseButtonEvent mouseButtonEvent);
+				void feedEvent(MouseButtonCode code, MouseButtonAction action);
 				void reset();
 				void resetTransientStates();
 				void resetAllTransientStates();

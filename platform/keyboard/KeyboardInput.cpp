@@ -154,13 +154,13 @@ namespace it {
 		}
 	
 		// Functions
-		void KeyboardInput::feedEvent(KeyEvent keyEvent) {
-			size_t i = getKeyIndex(keyEvent.keyCode);
+		void KeyboardInput::feedEvent(KeyCode code, KeyAction action) {
+			size_t i = getKeyIndex(code);
 	
 			if (!keys[i].inTransientState())
 				keysInTransientState.push_front(&keys[i]);
 	
-			keys[i].feedAction(keyEvent.action);
+			keys[i].feedAction(action);
 		}
 		void KeyboardInput::reset() {
 			for (size_t i = 0; i < keys.size(); i++)

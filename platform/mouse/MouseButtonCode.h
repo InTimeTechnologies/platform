@@ -2,8 +2,8 @@
 
 namespace it {
 	namespace platform {
-		enum class MouseButtonCode : size_t {
-			UNKNOWN,
+		enum class MouseButtonCode : int {
+			UNKNOWN = -1,
 			BUTTON_CODE_1,
 			BUTTON_CODE_2,
 			BUTTON_CODE_3,
@@ -11,8 +11,7 @@ namespace it {
 			BUTTON_CODE_5,
 			BUTTON_CODE_6,
 			BUTTON_CODE_7,
-			BUTTON_CODE_8,
-			COUNT
+			BUTTON_CODE_8
 		};
 	}
 }

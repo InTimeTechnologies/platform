@@ -5,7 +5,7 @@
 #include <forward_list>
 
 // Dependencies | it
-#include "KeyEvent.h"
+#include "Key.h"
 
 namespace it {
 	namespace platform {
@@ -35,7 +35,7 @@ namespace it {
 				size_t getKeyIndex(KeyCode keyCode) const;
 	
 				// Functions
-				void feedEvent(KeyEvent keyEvent);
+				void feedEvent(KeyCode code, KeyAction action);
 				void reset();
 				void resetTransientStates();
 				void resetAllTransientStates();	
