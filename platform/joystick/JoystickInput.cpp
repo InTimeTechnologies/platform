@@ -10,10 +10,10 @@ namespace it {
 		// Object | public
 	
 		// Getters
-		const std::vector<Joystick>& JoystickInput::getGamepads() const {
+		const std::vector<Joystick>& JoystickInput::getJoysticks() const {
 			return joysticks;
 		}
-		const Joystick& JoystickInput::getJoystick(JoystickCode joystickCode) const {
+		Joystick& JoystickInput::getJoystick(JoystickCode joystickCode) {
 			size_t i = static_cast<size_t>(joystickCode);
 			assert(i < joysticks.size() && "joystickCode is not present.");
 			return joysticks[i];

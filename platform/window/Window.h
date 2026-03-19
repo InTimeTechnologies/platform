@@ -14,6 +14,7 @@ namespace it {
 		class Window {
 			// Friends
 			friend class Platform;
+			friend class WindowManager;
 
 			// Structs
 			struct Position {

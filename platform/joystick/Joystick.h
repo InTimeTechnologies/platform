@@ -21,10 +21,9 @@ namespace it {
 			// Object
 			private:
 				// Properties
+				std::string name{ "unknown" };
 				JoystickCode code{ JoystickCode::UNKNOWN };
-		
 				bool connected{ false };
-
 				std::vector<JoystickButton> buttons{
 					{ JoystickButtonCode::A, false, false, false, "A" },
 					{ JoystickButtonCode::B, false, false, false, "B" },
@@ -52,9 +51,6 @@ namespace it {
 				};
 
 			public:
-				// Properties
-				std::string name{ "unknown" };
-
 				// Properties | callbacks
 				std::function<void(bool)> onConnection;
 				std::function<void(JoystickButtonCode, JoystickButtonAction)> onGamepadButton;
@@ -71,6 +67,7 @@ namespace it {
 				Joystick& operator=(Joystick&& other) noexcept = default;
 
 				// Getters
+				std::string getName() const;
 				JoystickCode getCode() const;
 				bool getConnected() const;
 				const std::vector<JoystickButton>& getButtons() const;
@@ -79,8 +76,6 @@ namespace it {
 				const JoystickAxis& getAxis(JoystickAxisCode axisCode) const;
 				const JoystickButton& getButton(size_t i) const;
 				const JoystickAxis& getAxis(size_t i) const;
-
-				std::string getName() const;
 
 			private:
 				// Functions

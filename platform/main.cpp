@@ -45,6 +45,11 @@ int testWindowing() {
 	// Setup
 	bool exit = false;
 	window.onClose = [&exit]() { exit = true; };
+	it::platform::Joystick& joystick = platform.joystickInput.getJoystick(it::platform::JoystickCode::JOYSTICK_0);
+	joystick.onConnection = [&joystick](bool connected) {
+		std::string message = connected ? "connected" : "disconnected";
+		std::cout << message + ": " + joystick.getName() << std::endl;
+	};
 	
 	// Loop
 	std::cout << "Running loop." << std::endl;

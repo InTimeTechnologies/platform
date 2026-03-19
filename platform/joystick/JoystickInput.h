@@ -36,8 +36,8 @@ namespace it {
 	
 			public:
 				// Getters
-				const std::vector<Joystick>& getGamepads() const;
-				const Joystick& getJoystick(JoystickCode joystickCode) const;
+				const std::vector<Joystick>& getJoysticks() const;
+				Joystick& getJoystick(JoystickCode joystickCode);
 	
 				void reset();
 				void resetTransientStates();

@@ -11,20 +11,20 @@
 namespace it {
 	namespace platform {
 		// cpp | struct
-		struct ConnectionEvent {
+		struct CPP_ConnectionEvent {
 			JoystickCode joystickCode{ JoystickCode::UNKNOWN };
 			bool connected{ false };
 		};
 
 		// cpp | variables
-		std::list<ConnectionEvent> joystickConnectionEventList{};
+		static std::list<CPP_ConnectionEvent> cpp_joystickConnectionEventList{};
 
 		// cpp | Functions | callbacks
-		static void s_joystickConnectionCallback(int joystickID, int connected) {
+		static void cpp_joystickConnectionCallback(int joystickID, int connected) {
 			Platform* platform = Platform::s_getSingleton();
 			assert(platform != nullptr && "platform == nullptr");
 			
-			joystickConnectionEventList.push_back({ static_cast<JoystickCode>(joystickID), connected == GLFW_TRUE});
+			cpp_joystickConnectionEventList.push_back({ static_cast<JoystickCode>(joystickID), connected == GLFW_TRUE});
 		}
 
 		// class Platform
@@ -68,7 +68,7 @@ namespace it {
 			assert(isInit && "Failed to init GLFW");
 
 			#if defined(JOYSTICK) && defined(GLFW_JOYSTICK)
-			glfwSetJoystickCallback(s_joystickConnectionCallback);
+			glfwSetJoystickCallback(cpp_joystickConnectionCallback);
 			for (Joystick& joystick : joystickInput.joysticks) {
 				int joystickCode = static_cast<int>(joystick.code);
 				joystick.connected = glfwJoystickPresent(joystickCode) == GLFW_TRUE;
@@ -105,11 +105,11 @@ namespace it {
 
 			#if defined(JOYSTICK) && defined(GLFW_JOYSTICK)
 			// Update joystick connection
-			for (const ConnectionEvent& connectionEvent : joystickConnectionEventList) {
+			for (const CPP_ConnectionEvent& connectionEvent : cpp_joystickConnectionEventList) {
 				Joystick& joystick = joystickInput.joysticks[static_cast<size_t>(connectionEvent.joystickCode)];
 				joystick.feedConnected(connectionEvent.connected);
 			}
-			joystickConnectionEventList.clear();
+			cpp_joystickConnectionEventList.clear();
 
 			// Update JoystickInput system
 			std::vector<Joystick>& joysticks = joystickInput.joysticks;
