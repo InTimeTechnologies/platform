@@ -20,11 +20,11 @@
                 "WINDOW",
                 "MOUSE",
                 "KEYBOARD",
-                "GAMEPAD",
+                "JOYSTICK",
                 "GLFW_WINDOW",
                 "GLFW_MOUSE",
                 "GLFW_KEYBOARD",
-                "GLFW_GAMEPAD"
+                "GLFW_JOYSTICK"
             ],
             "browse": {
                 "path": [

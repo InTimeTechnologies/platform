@@ -2,28 +2,29 @@
 
 // Dependencies | std
 #include <cassert>
-#include <iostream>
+#include <list>
+#include <utility>
 
 // Dependencies | glfw
 #include <GLFW/glfw3.h>
 
 namespace it {
 	namespace platform {
-		// Functions | callbacks
-		static void s_gamepadConnectionCallback(int gamepadID, int connected) {
+		// cpp | struct
+		struct ConnectionEvent {
+			JoystickCode joystickCode{ JoystickCode::UNKNOWN };
+			bool connected{ false };
+		};
+
+		// cpp | variables
+		std::list<ConnectionEvent> joystickConnectionEventList{};
+
+		// cpp | Functions | callbacks
+		static void s_joystickConnectionCallback(int joystickID, int connected) {
 			Platform* platform = Platform::s_getSingleton();
 			assert(platform != nullptr && "platform == nullptr");
-
-			Joystick& gamepad = platform->gamepadInput.getGamepad(static_cast<JoystickCode>(gamepadID));
-			gamepad.feedConnected(connected);
-
-			if (glfwJoystickIsGamepad(gamepadID) == GLFW_TRUE)
-				gamepad.name = glfwGetGamepadName(gamepadID);
-			else
-				gamepad.name = glfwGetJoystickName(gamepadID);
-
-			if (static_cast<bool>(gamepad.onConnection))
-				gamepad.onConnection(connected);
+			
+			joystickConnectionEventList.push_back({ static_cast<JoystickCode>(joystickID), connected == GLFW_TRUE});
 		}
 
 		// class Platform
@@ -66,14 +67,14 @@ namespace it {
 			isInit = static_cast<bool>(glfwInit());
 			assert(isInit && "Failed to init GLFW");
 
-			#if defined(GAMEPAD) && defined(GLFW_GAMEPAD)
-			glfwSetJoystickCallback(s_gamepadConnectionCallback);
-			for (Joystick& gamepad : gamepadInput.gamepads) {
-				int gamepadCode = static_cast<int>(gamepad.code);
-				gamepad.connected = glfwJoystickPresent(gamepadCode) == GLFW_TRUE;
-				if (gamepad.connected) {
-					bool isGamepad = glfwJoystickIsGamepad(gamepadCode) == GLFW_TRUE;
-					gamepad.name = isGamepad ? glfwGetGamepadName(gamepadCode) : glfwGetJoystickName(gamepadCode);
+			#if defined(JOYSTICK) && defined(GLFW_JOYSTICK)
+			glfwSetJoystickCallback(s_joystickConnectionCallback);
+			for (Joystick& joystick : joystickInput.joysticks) {
+				int joystickCode = static_cast<int>(joystick.code);
+				joystick.connected = glfwJoystickPresent(joystickCode) == GLFW_TRUE;
+				if (joystick.connected) {
+					bool isGamepad = glfwJoystickIsGamepad(joystickCode) == GLFW_TRUE;
+					joystick.name = isGamepad ? glfwGetGamepadName(joystickCode) : glfwGetJoystickName(joystickCode);
 				}
 			}
 			#endif
@@ -96,101 +97,41 @@ namespace it {
 			#if defined(KEYBOARD) && defined(GLFW_KEYBOARD)
 			keyboardInput.resetTransientStates();
 			#endif
-			#if defined(GAMEPAD) && defined(GLFW_GAMEPAD)
-			gamepadInput.resetTransientStates();
+			#if defined(JOYSTICK) && defined(GLFW_JOYSTICK)
+			joystickInput.resetTransientStates();
 			#endif
 
 			glfwPollEvents(); // Window, mouse and keyboard systems updates through GLFW callbacks
 
-			#if defined(GAMEPAD) && defined(GLFW_GAMEPAD)
-			// Update JoystickInput system
-			std::array<Joystick, static_cast<size_t>(16)>& gamepads = gamepadInput.gamepads;
+			#if defined(JOYSTICK) && defined(GLFW_JOYSTICK)
+			// Update joystick connection
+			for (const ConnectionEvent& connectionEvent : joystickConnectionEventList) {
+				Joystick& joystick = joystickInput.joysticks[static_cast<size_t>(connectionEvent.joystickCode)];
+				joystick.feedConnected(connectionEvent.connected);
+			}
+			joystickConnectionEventList.clear();
 
-			for (Joystick& gamepad : gamepads) {
+			// Update JoystickInput system
+			std::vector<Joystick>& joysticks = joystickInput.joysticks;
+
+			for (Joystick& joystick : joysticks) {
 				// Controller connectivity
-				bool controllerConnected = glfwJoystickPresent(static_cast<int>(gamepad.code));
-				gamepad.feedConnected(controllerConnected);
+				bool controllerConnected = glfwJoystickPresent(static_cast<int>(joystick.code));
+				joystick.feedConnected(controllerConnected);
 				if (!controllerConnected)
 					continue;
 
-				if (glfwJoystickIsGamepad(static_cast<int>(gamepad.code))) {
-					// Joystick button value forwading
-					GLFWgamepadstate gamepadState{};
-					glfwGetGamepadState(static_cast<int>(gamepad.code), &gamepadState);
-
-					gamepad.buttonA.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_A] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonB.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_B] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonX.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_X] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonY.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_Y] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonLeftBumper.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonRightBumper.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonBack.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_BACK] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonStart.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_START] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonGuide.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_GUIDE] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonLeftThumb.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_LEFT_THUMB] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonRightThumb.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_THUMB] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonDpadUp.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonDpadRight.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonDpadDown.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonDpadLeft.feedAction(gamepadState.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					// Joystick axis value forwarding
-					gamepad.axisLeftX.value = gamepadState.axes[GLFW_GAMEPAD_AXIS_LEFT_X];
-					gamepad.axisLeftY.value = gamepadState.axes[GLFW_GAMEPAD_AXIS_LEFT_Y];
-
-					gamepad.axisRightX.value = gamepadState.axes[GLFW_GAMEPAD_AXIS_RIGHT_X];
-					gamepad.axisRightY.value = gamepadState.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y];
-
-					gamepad.axisLeftTrigger.value = gamepadState.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER];
-					gamepad.axisRightTrigger.value = gamepadState.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER];
-				}
-				else {
-					// Joystick button values forwarding
-					int buttonCount = 0;
-    				const unsigned char* buttons = glfwGetJoystickButtons(static_cast<int>(gamepad.code), &buttonCount);
-
-					if (buttonCount >= GLFW_GAMEPAD_BUTTON_DPAD_LEFT) {
-					// Joystick axis values forwarding
-					gamepad.buttonA.feedAction(buttons[GLFW_GAMEPAD_BUTTON_A] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonB.feedAction(buttons[GLFW_GAMEPAD_BUTTON_B] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonX.feedAction(buttons[GLFW_GAMEPAD_BUTTON_X] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonY.feedAction(buttons[GLFW_GAMEPAD_BUTTON_Y] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonLeftBumper.feedAction(buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonRightBumper.feedAction(buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonBack.feedAction(buttons[GLFW_GAMEPAD_BUTTON_BACK] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonStart.feedAction(buttons[GLFW_GAMEPAD_BUTTON_START] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonGuide.feedAction(buttons[GLFW_GAMEPAD_BUTTON_GUIDE] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonLeftThumb.feedAction(buttons[GLFW_GAMEPAD_BUTTON_LEFT_THUMB] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonRightThumb.feedAction(buttons[GLFW_GAMEPAD_BUTTON_RIGHT_THUMB] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-
-					gamepad.buttonDpadUp.feedAction(buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonDpadRight.feedAction(buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonDpadDown.feedAction(buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					gamepad.buttonDpadLeft.feedAction(buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
-					}
-
-					// Joystick axis forwarding
-					int axisCount = 0;
-    				const float* axes = glfwGetJoystickAxes(static_cast<int>(gamepad.code), &axisCount);
-	
-					if (axisCount >= GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER) {
-					gamepad.axisLeftX.value = axes[GLFW_GAMEPAD_AXIS_LEFT_X];
-					gamepad.axisLeftY.value = axes[GLFW_GAMEPAD_AXIS_LEFT_Y];
-
-					gamepad.axisRightX.value = axes[GLFW_GAMEPAD_AXIS_RIGHT_X];
-					gamepad.axisRightY.value = axes[GLFW_GAMEPAD_AXIS_RIGHT_Y];
-
-					gamepad.axisLeftTrigger.value = axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER];
-					gamepad.axisRightTrigger.value = axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER];
-					}
-				}
+				// Joystick button values forwarding
+				int buttonCount = 0;
+    			const unsigned char* buttons = glfwGetJoystickButtons(static_cast<int>(joystick.code), &buttonCount);
+				for (size_t i = 0; i < joystick.buttons.size() && i < buttonCount; i++)
+					joystick.buttons[i].feedAction(buttons[i] == GLFW_PRESS ? JoystickButtonAction::PRESSED : JoystickButtonAction::RELEASED);
+					
+				// Joystick axis value forwarding
+				int axisCount = 0;
+				const float* axes = glfwGetJoystickAxes(static_cast<int>(joystick.code), &axisCount);
+				for (size_t i = 0; i < joystick.axes.size() && i < axisCount; i++)
+					joystick.axes[i].value = axes[i];
 			}
 			#endif
 		}

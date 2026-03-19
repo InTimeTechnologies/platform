@@ -1,7 +1,7 @@
 #pragma once
 
 // Dependencies | std
-#include <array>
+#include <vector>
 
 // Dependencies | it::platform
 #include "Joystick.h"
@@ -15,7 +15,7 @@ namespace it {
 			// Object
 			private:
 				// Properties
-				std::array<Joystick, static_cast<size_t>(16)> gamepads{
+				std::vector<Joystick> joysticks {
 					Joystick{ JoystickCode::JOYSTICK_0 },
 					Joystick{ JoystickCode::JOYSTICK_1 },
 					Joystick{ JoystickCode::JOYSTICK_2 },
@@ -36,14 +36,9 @@ namespace it {
 	
 			public:
 				// Getters
-				const std::array<Joystick, static_cast<size_t>(16)>& getGamepads() const;
+				const std::vector<Joystick>& getGamepads() const;
+				const Joystick& getJoystick(JoystickCode joystickCode) const;
 	
-				Joystick& getGamepad(JoystickCode joystickCode);
-				size_t getGamepadIndex(JoystickCode joystickCode) const;
-	
-				void feedAction(JoystickCode joystickCode, bool connected);
-				void feedAction(JoystickCode joystickCode, JoystickButtonCode joystickButtoneCode, JoystickButtonAction action);
-				void feedAction(JoystickCode joystickCode, JoystickAxisCode joystickAxisCode, float value);
 				void reset();
 				void resetTransientStates();
 		};
