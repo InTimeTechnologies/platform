@@ -13,8 +13,15 @@ namespace it {
 		class Window;
 
 		struct Event {
-			// Properties
-			Window* window{ nullptr };
+			// Constructor / Destructor
+			Event() = default;
+			Event(const Event& other) = default;
+			Event(Event&& other) noexcept = default;
+			virtual ~Event() = default;
+
+			// Operators | assignment
+			Event& operator=(const Event& other) = default;
+			Event& operator=(Event&& other) noexcept = default;
 
 			// Functions
 			virtual EventType getType() const = 0;

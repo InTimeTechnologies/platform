@@ -18,10 +18,12 @@
                 "_CRT_SECURE_NO_WARNINGS",
                 "STB_IMAGE_WRITE_IMPLEMENTATION",
                 "WINDOW",
+                "EVENT",
                 "MOUSE",
                 "KEYBOARD",
                 "JOYSTICK",
                 "GLFW_WINDOW",
+                "GLFW_EVENT",
                 "GLFW_MOUSE",
                 "GLFW_KEYBOARD",
                 "GLFW_JOYSTICK"
