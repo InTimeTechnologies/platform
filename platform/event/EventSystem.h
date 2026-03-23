@@ -8,6 +8,9 @@
 
 namespace it  {
     namespace platform {
+        // Forward declarations
+        class Window;
+
         class EventSystem {
             // Friends
             friend class Platform;
@@ -28,13 +31,22 @@ namespace it  {
                 EventSystem& operator=(EventSystem&& other) noexcept = delete;
 
                 // Getters
-                const std::list<Event*> getEventList() const;
+                const std::list<Event*>& getEventList() const;
 
                 // Functions
 
             private:
                 // Functions
                 void feedEvent(Event* event);
+                void dispatchEvents();
+                void dispatch(Event* event);
         };
     }
 }
+
+/* Qt's model
+ * Dispatch → notify() (system-level routing)
+ * Receive/Route → event()
+ * Handle → xxxEvent() functions
+ * Control propagation → accept()/ignore()
+ */

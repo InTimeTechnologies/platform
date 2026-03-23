@@ -6,7 +6,7 @@
 // Dependencies | glfw
 #include <GLFW/glfw3.h>
 
-// Dependencies | it
+// Dependencies | it::platform
 #include <Platform.h>
 #include <window/Window.h>
 
@@ -15,6 +15,8 @@
 
 #include <keyboard/KeyCode.h>
 #include <keyboard/KeyAction.h>
+
+#include <event/Event.h>
 
 namespace it {
 	namespace platform {
@@ -487,6 +489,27 @@ namespace it {
 		void Window::swapBuffers() {
 			GLFWwindow* glfwWindow = reinterpret_cast<GLFWwindow*>(backendHandle);
 			glfwSwapBuffers(glfwWindow);
+		}
+
+		void Window::processEvent(Event* event) {
+			switch (event->getType()) {
+				case EventType::MOVE:
+				case EventType::RESIZE:
+				case EventType::WINDOW_CLOSE:
+				case EventType::FOCUS:
+				case EventType::ICONIFY:
+				case EventType::REFRESH:
+				case EventType::WINDOW_MAXIMIZE:
+				case EventType::CONTENT_SCALE:
+
+				case EventType::KEY:
+				
+				case EventType::MOUSE_BUTTON:
+				case EventType::MOUSE_POSITION:
+				case EventType::UNKNOWN:
+				default:
+					break;
+			}
 		}
 
 		// Functions | Feeders

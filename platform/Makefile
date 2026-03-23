@@ -20,6 +20,21 @@ CPP_STD ?= c++20
 C_STD ?= c11
 WARNINGS ?= all extra
 
+# Out directories
+INTERMIDIARY_DIR ?= intermidiary/$(PLATFORM)/$(CONFIGURATION)
+BUILD_DIR ?= build/$(PLATFORM)/$(CONFIGURATION)
+
+# Definitions, header include, library directory include and library include
+DEFINITIONS ?= STB_IMAGE_IMPLEMENTATION _CRT_SECURE_NO_WARNINGS STB_IMAGE_WRITE_IMPLEMENTATION WINDOW EVENT MOUSE KEYBOARD JOYSTICK GLFW_WINDOW GLFW_EVENT GLFW_MOUSE GLFW_KEYBOARD GLFW_JOYSTICK
+INCLUDE_DIRS ?= "$(PROJECT_DIR)" "$(SOLUTION_DIR)/dependencies/glfw/include"
+LIBRARY_DIRS ?= "$(SOLUTION_DIR)/dependencies/glfw/build/lib"
+LIBRARIES ?= glfw
+LD_LIBRARY_PATH ?= $$ORIGIN
+
+# Output
+OUTPUT_NAME ?= $(PROJECT_NAME).bin
+OUTPUT_PATH := $(BUILD_DIR)/$(OUTPUT_NAME)
+
 # Compiler arguments
 ARG_CPP_STD := $(addprefix -std=,$(CPP_STD))
 ARG_C_STD := $(addprefix -std=,$(C_STD))
@@ -34,23 +49,20 @@ ARG_OPTIMIZATION := -O2 -DNDEBUG
 endif
 ARG_FLAGS ?= $(ARG_CPP_STD) $(ARG_C_STD) $(ARG_WARNINGS) $(ARG_OPTIMIZATION) $(ARG_DEBUG_SYMBOLS)
 
+ARG_INCLUDE_DIRS := -I,$(INCLUDE_DIRS)
+ARG_DEFINITIONS := $(addprefix -D,$(DEFINITIONS))
+ARG_LIBRARY_DIRS := $(addprefix -L,$(LIBRARY_DIRS))
+ARG_LD_LIBRARY_PATHS := -Wl,-rpath,'$(LD_LIBRARY_PATH)'
+ARG_LIBRARIES := $(addprefix -l,$(LIBRARIES))
+
+# CXX_COMPILE := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -MMD -MP -c
+# CXX_LINK := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(OBJS) $(OBJS_EXTERNAL) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(ARG_LD_LIBRARY_PATHS) $(addprefix -l,$(LIBRARIES)) -o
+
+
 # Debug arguments: -g -O0 -Wall -Wextra
 # Release arguments: -O2 -DNDEBUG -Wall -Wextra
 # Profiling: -pg -O2
 
-# Out directories
-INTERMIDIARY_DIR ?= intermidiary/$(PLATFORM)/$(CONFIGURATION)
-BUILD_DIR ?= build/$(PLATFORM)/$(CONFIGURATION)
-
-# Definitions, header include, library directory include and library include
-DEFINITIONS := STB_IMAGE_IMPLEMENTATION _CRT_SECURE_NO_WARNINGS STB_IMAGE_WRITE_IMPLEMENTATION WINDOW EVENT MOUSE KEYBOARD JOYSTICK GLFW_WINDOW GLFW_EVENT GLFW_MOUSE GLFW_KEYBOARD GLFW_JOYSTICK
-INCLUDE_DIRS := "$(PROJECT_DIR)" "$(SOLUTION_DIR)/dependencies/glfw/include"
-LIBRARY_DIRS := "$(SOLUTION_DIR)/dependencies/glfw/build/lib"
-LIBRARIES := glfw
-
-# Output
-OUTPUT_NAME ?= $(PROJECT_NAME).bin
-OUTPUT_PATH := $(BUILD_DIR)/$(OUTPUT_NAME)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # SRC
@@ -96,9 +108,27 @@ endif
 # ---------------------------------------------------------------------------------------------------------------------
 # Compile and link commands
 CXX_COMPILE := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -MMD -MP -c
-CXX_LINK := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(OBJS) $(OBJS_EXTERNAL) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -o
+CXX_LINK := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(OBJS) $(OBJS_EXTERNAL) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(ARG_LD_LIBRARY_PATHS) $(addprefix -l,$(LIBRARIES)) -o
+# g++ ... -Wl,-rpath,'$ORIGIN'
 
-# Debugging
+# CXX_LINK := $(PLATFORM)-$(CXX) \
+#     $(ARG_FLAGS) \
+#     $(OBJS) $(OBJS_EXTERNAL) \
+#     $(addprefix -I,$(INCLUDE_DIRS)) \
+#     $(addprefix -D,$(DEFINITIONS)) \
+#     $(addprefix -L,$(LIBRARY_DIRS)) \
+#     -Wl,-rpath,'$$ORIGIN' \
+#     $(addprefix -l,$(LIBRARIES)) \
+#     -o
+
+# LD_LIBRARY_PATH
+# RPATH / RUNPATH (this flag)
+# System paths
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# VAR
+# ---------------------------------------------------------------------------------------------------------------------
 NULL := null
 TEST := $(NULL)
 VAR ?= $(NULL)
@@ -136,12 +166,25 @@ $(INTERMIDIARY_DIR)/%.o: %.c
 $(SRC_DEPENDENCIES_DIR)/%.d: %.cpp
 	@echo "$<" "$@"
 
+# Make links to .so files
+.PHONY: link_to_so_files
+link_to_so_files:
+	@echo "making links to local .so files."
+
 # Print variable and its contents
 # example usage: make print VAR=PROJECT_DIR
+.PHONY: print_var
 print_var:
-	@echo "$(VAR) = $($(VAR))"
-	@echo "--------------------"
-	@printf "%s\n" $($(VAR))
+	$(info $(VAR) = $($(VAR)))
+	@echo done
+
+#@echo $(VAR) = $($(VAR))
+#@echo --------------------
+#@printf '%s\n' '$($(VAR))'
+
+#.PHONY test
+#test:
+#	@echo 
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Print Makefile variables

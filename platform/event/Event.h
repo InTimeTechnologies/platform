@@ -29,6 +29,7 @@ namespace it {
 
 		struct MoveEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			int x{ -1 };
 			int y{ -1 };
 
@@ -38,6 +39,7 @@ namespace it {
 
 		struct ResizeEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			int width{ -1 };
 			int height{ -1 };
 
@@ -46,12 +48,16 @@ namespace it {
 		};
 
 		struct WindowCloseEvent : public Event {
+			// Properties
+			Window* window{ nullptr };
+
 			// Functions
 			virtual EventType getType() const override;
 		};
 
 		struct FocusEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			bool focused{ false };
 
 			// Functions
@@ -60,6 +66,7 @@ namespace it {
 
 		struct IconifyEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			bool iconified{ false };
 
 			// Functions
@@ -67,12 +74,16 @@ namespace it {
 		};
 
 		struct RefreshEvent : public Event {
+			// Properties
+			Window* window{ nullptr };
+
 			// Functions
 			virtual EventType getType() const override;
 		};
 
 		struct WindowMaximizeEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			bool maximize{ false };
 
 			// Functions
@@ -80,12 +91,18 @@ namespace it {
 		};
 
 		struct ContentScaleEvent : public Event {
+			// Properties
+			Window* window{ nullptr };
+			float xScale{ 1.0f };
+			float yScale{ 1.0f };
+
 			// Functions
 			virtual EventType getType() const override;
 		};
 
 		struct KeyEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			KeyCode keyCode{ KeyCode::UNKNOWN };
 			int scanCode{ -1 };
 			KeyAction action{ KeyAction::UNKNOWN };
@@ -97,6 +114,7 @@ namespace it {
 
 		struct MouseButtonEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			MouseButtonCode code{ MouseButtonCode::UNKNOWN };
 			MouseButtonAction action{ MouseButtonAction::UNKNOWN };
 
@@ -106,6 +124,7 @@ namespace it {
 
 		struct MousePositionEvent : public Event {
 			// Properties
+			Window* window{ nullptr };
 			int x{ -1 };
 			int y{ -1 };
 

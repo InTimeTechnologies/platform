@@ -7,6 +7,9 @@
 
 namespace it {
 	namespace platform {
+		// Forward declarations
+		class Event;
+
 		class Window {
 			// Friends
 			friend class Platform;
@@ -144,6 +147,8 @@ namespace it {
 				bool isCreated() const;
 				void makeContextCurrent();
 				void swapBuffers();
+				
+				void processEvent(Event* event);
 
 				// Functions | Feeders
 				void feedTitle(const std::string& title);
