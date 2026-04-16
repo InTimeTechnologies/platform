@@ -10,7 +10,7 @@ namespace it {
 	namespace platform {
 		class JoystickInput {
 			// Friends
-			friend class Platform;
+			friend class PlatformImplementation;
 
 			// Object
 			private:
@@ -39,6 +39,8 @@ namespace it {
 				const std::vector<Joystick>& getJoysticks() const;
 				Joystick& getJoystick(JoystickCode joystickCode);
 	
+			private:
+				// Functions
 				void reset();
 				void resetTransientStates();
 		};

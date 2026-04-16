@@ -10,20 +10,33 @@ namespace it {
 		bool MouseButton::inTransientState() const {
 			return justPressed || justReleased;
 		}
-		void MouseButton::feedAction(MouseButtonAction action) {
+		bool MouseButton::feedAction(MouseButtonAction action) {
+			bool differentAction = true;
+
 			switch (action) {
 				case MouseButtonAction::PRESS:
-					justPressed = true;
+					if (!pressed) {
+						if (justPressed)
+							differentAction = false;
+						justPressed = true;
+					}
 					pressed = true;
 					break;
 				case MouseButtonAction::RELEASE:
-					justReleased = true;
+					if (pressed) {
+						if (justReleased)
+							differentAction = false;
+						justReleased = true;
+					}
 					pressed = false;
 					break;
 				case MouseButtonAction::UNKNOWN:
 				default:
+					differentAction = false;
 					break;
 			}
+
+			return differentAction;
 		}
 		void MouseButton::reset() {
 			pressed = false;

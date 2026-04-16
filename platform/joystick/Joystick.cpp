@@ -30,20 +30,20 @@ namespace it {
 		}
 		const JoystickButton& Joystick::getButton(JoystickButtonCode buttonCode) const {
 			size_t i = static_cast<size_t>(buttonCode);
-			assert(i >= 0 && i < buttons.size() && "Index i out of bounds.");
+			assert(i < buttons.size() && "Index i out of bounds.");
 			return buttons[i];
 		}
 		const JoystickAxis& Joystick::getAxis(JoystickAxisCode axisCode) const {
 			size_t i = static_cast<size_t>(axisCode);
-			assert(i >= 0 && i < axes.size() && "Index i out of bounds.");
+			assert(i < axes.size() && "Index i out of bounds.");
 			return axes[i];
 		}
 		const JoystickButton& Joystick::getButton(size_t i) const {
-			assert(i >= 0 && i < buttons.size() && "Index i out of bounds.");
+			assert(i < buttons.size() && "Index i out of bounds.");
 			return buttons[i];
 		}
 		const JoystickAxis& Joystick::getAxis(size_t i) const {
-			assert(i >= 0 && i < axes.size() && "Index i out of bounds.");
+			assert(i < axes.size() && "Index i out of bounds.");
 			return axes[i];
 		}
 		std::string Joystick::getName() const {
@@ -62,22 +62,36 @@ namespace it {
 		}
 		void Joystick::feedEvent(JoystickButtonCode buttonCode, JoystickButtonAction action) {
 			size_t i = static_cast<size_t>(buttonCode);
-			assert(i >= 0 && i < axes.size() && "Index i out of bounds.");
+			assert(i < axes.size() && "Index i out of bounds.");
 
-			buttons[i].feedAction(action);
+			bool differentAction = buttons[i].feedAction(action);
 
 			if (static_cast<bool>(onGamepadButton))
 				onGamepadButton(buttonCode, action);
+
+			if (differentAction) {
+				if (buttons[i].justPressed) {
+					buttonsPressedCount++;
+					if (static_cast<size_t>(buttonsPressedCount) > buttons.size())
+						buttonsPressedCount = buttons.size();
+				}
+				if (buttons[i].justReleased) {
+					buttonsPressedCount--;
+					if (buttonsPressedCount < 0)
+						buttonsPressedCount = 0;
+				}
+			}
 		}
 		void Joystick::feedEvent(JoystickAxisCode axisCode, float value) {
 			size_t i = static_cast<size_t>(axisCode);
-			assert(i >= 0 && i < axes.size() && "Index i out of bounds.");
+			assert(i < axes.size() && "Index i out of bounds.");
 		
 			axes[i].value = value;
 		}
 		void Joystick::reset() {
 			for (size_t i = 0; i < buttons.size(); i++)
 				buttons[i].reset();
+			buttonsPressedCount = 0;
 			for (size_t i = 0; i < axes.size(); i++)
 				axes[i].reset();
 		}

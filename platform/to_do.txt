@@ -1,6 +1,10 @@
-Revise the joystick system. It should allow more than 16 joystick and this capacity should be variable accross systems.
-Forward the window key events to the keyboard input system. The feeder functions should be private but accessible to Platform and their respective Input classes through friendship.
-Forward mouse events to the mouse input system.
+Test PlatformImplementation::s_monitorConnectionCallback.
+When you are done moving, review and test the joystick related code.
+Implement all GLFWwindow features within it::platform::Window class.
+Implement a callback through std::function objects.
+Implement an event system/dispatcher.
+Implement an event filter.
+Implement widgets.
 Modify Makefile to generate .a and .so files. Check wether validate whether .a and .so files and which arguments you'd need to pass to the compiler to do so.
 Create <path_to_root>/test project. In here, you will write all your test cases for the platform project located in <path_to_root>/platform.
 Implement a second framework like Win32 or Qt.

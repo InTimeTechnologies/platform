@@ -16,7 +16,7 @@ namespace it {
 		class Joystick {
 			// Friends
 			friend class JoystickInput;
-			friend class Platform;
+			friend class PlatformImplementation;
 
 			// Object
 			private:
@@ -49,6 +49,7 @@ namespace it {
 					{ JoystickAxis(JoystickAxisCode::LEFT_TRIGGER, 0.0f, "left_trigger") },
 					{ JoystickAxis(JoystickAxisCode::RIGHT_TRIGGER, 0.0f, "right_trigger") }
 				};
+				int buttonsPressedCount{ 0 };
 
 			public:
 				// Properties | callbacks

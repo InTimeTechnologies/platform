@@ -3,26 +3,16 @@
 // Dependencies | std
 #include <string>
 #include <functional>
-#include <list>
+
+// Dependencies | platform
+#include <event/Event.h>
 
 namespace it {
 	namespace platform {
-		// Forward declarations
-		class Event;
-
 		class Window {
 			// Friends
 			friend class Platform;
-
-			// Structs
-			struct Position {
-				int x{ 0 };
-				int y{ 0 };
-			};
-			struct Size {
-				int width{ 0 };
-				int height{ 0 };
-			};
+			friend class PlatformImplementation;
 
 			// Static
 			public:
@@ -32,6 +22,11 @@ namespace it {
 				static int s_defaultY;
 				static int s_defaultWidth;
 				static int s_defaultHeight;
+				static int s_defaultMinimumWidth;
+				static int s_defaultMinimumHeight;
+				static int s_defaultMaximumWidth;
+				static int s_defaultMaximumHeight;
+
 				static bool s_defaultVisible;
 				static bool s_defaultResizable;
 			
@@ -39,33 +34,15 @@ namespace it {
 			protected:
 				// Properties
 				void* backendHandle{ nullptr };
-				std::string title{};
-				int x{ 0 }, y{ 0 };
-				int width{ 0 }, height{ 0 };
-				bool closed{ false };
-
-				// Properties (window state)
-				bool focused{ false };
-				bool iconified{ false };
-				bool maximized{ false };
-				bool visible{ false };
-				bool hovered{ false };
-
-				// Properties (window property attributes)
-				bool resizable{ false };
-				bool decorated{ false };
-				bool floating{ false };
-				bool autoiconify{ false };
-				bool focusOnShow{ false };
-				bool mousePassthrough{ false };
-				bool transparentFrameBuffer{ false };
-
-				// Properties (context attributes OpenGL / OpenGL ES)
-				std::string clientAPI{};
-				std::string contextCreationAPI{};
-				std::string contextMajorVersion{};
-				std::string contextMinorVersion{};
-				std::string contextRevision{};
+				std::string title{ s_defaultTitle };
+				int x{ s_defaultX };
+				int y{ s_defaultY };
+				int width{ s_defaultWidth };
+				int height{ s_defaultHeight };
+				int minimumWidth{ s_defaultMinimumWidth };
+				int minimumHeight{ s_defaultMinimumHeight };
+				int maximumWidth{ s_defaultMaximumWidth };
+				int maximumHeight{ s_defaultMaximumHeight };
 			
 			public:
 				// Properties
@@ -79,10 +56,10 @@ namespace it {
 				std::function<void(float, float)> onScale;
 
 				// Constructor / Destructor
-				Window() = default;
+				Window();
 				Window(const Window& other) = delete;
 				Window(Window&& other) = delete;
-				virtual ~Window() = default;
+				virtual ~Window();
 			
 				// Operators | assignment
 				Window& operator=(const Window& other) = delete;
@@ -90,6 +67,10 @@ namespace it {
 				
 				// Operators | equality
 				bool operator==(const Window& other) const;
+
+				// -------------------------------------------------------------------------
+				// Implementation specific start
+				// -------------------------------------------------------------------------
 				
 				// Getters
 				std::string getTitle() const;
@@ -99,27 +80,27 @@ namespace it {
 				int getHeight() const;
 
 				// Getters (window state)
-				bool getFocused() const;
-				bool getIconified() const;
-				bool getMaximized() const;
-				bool getVisible() const;
-				bool getHovered() const;
+				bool queryFocused() const;
+				bool queryIconified() const;
+				bool queryMaximized() const;
+				bool queryVisible() const;
+				bool queryHovered() const;
 
 				// Getters (window property attributes)
-				bool getResizable() const;
-				bool getDecorated() const;
-				bool getFloating() const;
-				bool getAutoiconify() const;
-				bool getFocusOnShow() const;
-				bool getMousePassthrough() const;
-				bool getTransparentFrameBuffer() const;
+				bool queryResizable() const;
+				bool queryDecorated() const;
+				bool queryFloating() const;
+				bool queryAutoiconify() const;
+				bool queryFocusOnShow() const;
+				bool queryMousePassthrough() const;
+				bool queryTransparentFrameBuffer() const;
 
 				// Getters (context attributes OpenGL / OpenGL ES)
-				std::string getClientAPI() const;
-				std::string getContextCreationAPI() const;
-				int getContextMajorVersion() const;
-				int getContextMinorVersion() const;
-				int getContextRevision() const;
+				std::string queryClientAPI() const;
+				std::string queryContextCreationAPI() const;
+				int queryContextMajorVersion() const;
+				int queryContextMinorVersion() const;
+				int queryContextRevision() const;
 				
 				// Setters
 				void setTitle(const std::string& title);
@@ -127,36 +108,34 @@ namespace it {
 				void setSize(int width, int height);
 
 				// Setters (window state)
-				void setFocus();
-				void setIconified(bool iconified);
-				void setMaximized(bool maximized);
-				void setVisible(bool visible);
+				void applyFocus();
+				void applyIconified(bool iconified);
+				void applyMaximized(bool maximized);
+				void applyVisible(bool visible);
 				
 				// Setters (window property attributes)
-				void setResizable(bool resizable);
-				void setDecorated(bool decorated);
-				void setFloating(bool floating);
-				void setAutoiconify(bool autoiconify);
-				void setFocusOnShow(bool focusOnShow);
-				void setMousePassthrough(bool mousePassthrough);
-				void setTransparentFrameBuffer(bool transparentFrameBuffer);
+				void applyResizable(bool resizable);
+				void applyDecorated(bool decorated);
+				void applyFloating(bool floating);
+				void applyAutoiconify(bool autoiconify);
+				void applyFocusOnShow(bool focusOnShow);
+				void applyMousePassthrough(bool mousePassthrough);
+				void applyTransparentFrameBuffer(bool transparentFrameBuffer);
 
 				// Functions
-				bool create();
-				void close();
 				bool isCreated() const;
 				void makeContextCurrent();
 				void swapBuffers();
-				
-				void processEvent(Event* event);
 
-				// Functions | Feeders
+				// -------------------------------------------------------------------------
+				// Implementation specific end
+				// -------------------------------------------------------------------------
+
+			private:
+				// Functions
 				void feedTitle(const std::string& title);
 				void feedPosition(int x, int y);
 				void feedSize(int width, int height);
-				void feedVisible(bool visible);
-				void feedResizable(bool resizable);
-				void feedFocused(bool focused);
 		};
 	}
 }

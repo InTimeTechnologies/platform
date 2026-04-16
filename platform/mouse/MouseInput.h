@@ -11,11 +11,19 @@
 namespace it {
 	namespace platform {
 		class MouseInput {
+			// Friends
+			friend class PlatformImplementation;
+
 			// Object
 			private:
 				// Properties
-				std::forward_list<MouseButton*> mouseButtonsInTransientState{};
 				std::vector<MouseButton> mouseButtons{};
+				int x{ 0 };
+				int y{ 0 };
+				double xScroll{ 0.0 };
+				double yScroll{ 0.0 };
+				std::forward_list<MouseButton*> mouseButtonsInTransientState{};
+				int mouseButtonsPressedCount{ 0 };
 	
 			public:
 				// Constructor / Destructor
@@ -29,15 +37,16 @@ namespace it {
 				MouseInput& operator=(MouseInput&& other) noexcept = default;
 	
 				// Getters
-				const std::forward_list<MouseButton*>& getMouseButtonsToReset() const;
 				const std::vector<MouseButton>& getMouseButtons() const;
+				int getMouseButtonsPressedCount() const;
+				const std::forward_list<MouseButton*>& getMouseButtonsToReset() const;
 				const MouseButton& getMouseButton(MouseButtonCode mouseButtonCode) const;
 	
+			private:
 				// Functions
 				void feedEvent(MouseButtonCode code, MouseButtonAction action);
 				void reset();
 				void resetTransientStates();
-				void resetAllTransientStates();
 		};
 	}
 }

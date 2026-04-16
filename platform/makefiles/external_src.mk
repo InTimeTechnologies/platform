@@ -1,11 +1,15 @@
 # Arguments passed from the main Makefile
-CXX_COMPILE ?=
+COMPILE_CPP ?=
+COMPILE_C ?=
 SRC ?=
 OBJS ?=
 
 # Error check: arguments must not be empty
-ifeq ($(CXX_COMPILE),)
-$(error CXX_COMPILE is empty)
+ifeq ($(COMPILE_CPP),)
+$(error COMPILE_CPP is empty)
+endif
+ifeq ($(COMPILE_C),)
+$(error COMPILE_C is empty)
 endif
 
 # Ensure SRC and OBJS have the same number of elements
@@ -27,7 +31,13 @@ compile: $(OBJS)
 define COMPILE_TEMPLATE
 $2: $1
 	@mkdir -p $(dir $2)
-	$(CXX_COMPILE) $1 -o $2
+	$(if $(filter .c,$(suffix $1)), \
+		$(COMPILE_C) $1 -o $2, \
+		$(if $(filter .cpp,$(suffix $1)), \
+			$(COMPILE_CPP) $1 -o $2, \
+			$(error Unsupported file extension: $1) \
+		) \
+	)
 endef
 
 # Generate rules for each SRC and OBJS pair
@@ -40,3 +50,10 @@ $(foreach i,$(shell seq 1 $(words $(SRC))), \
 
 # Include dependency files
 -include $(OBJS:.o=.d)
+
+# Backup
+#define COMPILE_TEMPLATE
+#$2: $1
+#	@mkdir -p $(dir $2)
+#	$(COMPILE_CPP) $1 -o $2
+#endef

@@ -18,6 +18,8 @@ namespace it {
 			assert(i < joysticks.size() && "joystickCode is not present.");
 			return joysticks[i];
 		}
+
+		// Object | private
 	
 		// Functions
 		void JoystickInput::reset() {

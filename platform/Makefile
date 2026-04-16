@@ -13,8 +13,8 @@ SOLUTION_NAME := $(shell basename $(SOLUTION_DIR))
 # Compiler commands, flags and directories
 # ---------------------------------------------------------------------------------------------------------------------
 # Compiler
-CXX ?= g++-15
-PLATFORM ?= $(shell $(CXX) -dumpmachine)
+COMPILER ?= g++-15
+PLATFORM ?= $(shell $(COMPILER) -dumpmachine)
 CONFIGURATION ?= Debug
 CPP_STD ?= c++20
 C_STD ?= c11
@@ -47,7 +47,7 @@ ARG_OPTIMIZATION := -O0
 else ifeq ($(CONFIGURATION),Release)
 ARG_OPTIMIZATION := -O2 -DNDEBUG
 endif
-ARG_FLAGS ?= $(ARG_CPP_STD) $(ARG_C_STD) $(ARG_WARNINGS) $(ARG_OPTIMIZATION) $(ARG_DEBUG_SYMBOLS)
+ARG_FLAGS ?= $(ARG_WARNINGS) $(ARG_OPTIMIZATION) $(ARG_DEBUG_SYMBOLS)
 
 ARG_INCLUDE_DIRS := -I,$(INCLUDE_DIRS)
 ARG_DEFINITIONS := $(addprefix -D,$(DEFINITIONS))
@@ -55,8 +55,8 @@ ARG_LIBRARY_DIRS := $(addprefix -L,$(LIBRARY_DIRS))
 ARG_LD_LIBRARY_PATHS := -Wl,-rpath,'$(LD_LIBRARY_PATH)'
 ARG_LIBRARIES := $(addprefix -l,$(LIBRARIES))
 
-# CXX_COMPILE := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -MMD -MP -c
-# CXX_LINK := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(OBJS) $(OBJS_EXTERNAL) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(ARG_LD_LIBRARY_PATHS) $(addprefix -l,$(LIBRARIES)) -o
+# COMPILE_CPP := $(PLATFORM)-$(COMPILER) $(ARG_FLAGS) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -MMD -MP -c
+# CXX_LINK := $(PLATFORM)-$(COMPILER) $(ARG_FLAGS) $(OBJS) $(OBJS_EXTERNAL) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(ARG_LD_LIBRARY_PATHS) $(addprefix -l,$(LIBRARIES)) -o
 
 
 # Debug arguments: -g -O0 -Wall -Wextra
@@ -107,11 +107,12 @@ endif
 # Compiler commands
 # ---------------------------------------------------------------------------------------------------------------------
 # Compile and link commands
-CXX_COMPILE := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -MMD -MP -c
-CXX_LINK := $(PLATFORM)-$(CXX) $(ARG_FLAGS) $(OBJS) $(OBJS_EXTERNAL) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(ARG_LD_LIBRARY_PATHS) $(addprefix -l,$(LIBRARIES)) -o
+COMPILE_C := $(PLATFORM)-$(COMPILER) $(ARG_C_STD) $(ARG_FLAGS) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -MMD -MP -c
+COMPILE_CPP := $(PLATFORM)-$(COMPILER) $(ARG_CPP_STD) $(ARG_FLAGS) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(addprefix -l,$(LIBRARIES)) -MMD -MP -c
+CXX_LINK := $(PLATFORM)-$(COMPILER) $(ARG_FLAGS) $(OBJS) $(OBJS_EXTERNAL) $(addprefix -I,$(INCLUDE_DIRS)) $(addprefix -D,$(DEFINITIONS)) $(addprefix -L,$(LIBRARY_DIRS)) $(ARG_LD_LIBRARY_PATHS) $(addprefix -l,$(LIBRARIES)) -o
 # g++ ... -Wl,-rpath,'$ORIGIN'
 
-# CXX_LINK := $(PLATFORM)-$(CXX) \
+# CXX_LINK := $(PLATFORM)-$(COMPILER) \
 #     $(ARG_FLAGS) \
 #     $(OBJS) $(OBJS_EXTERNAL) \
 #     $(addprefix -I,$(INCLUDE_DIRS)) \
@@ -138,12 +139,12 @@ VAR ?= $(NULL)
 # ---------------------------------------------------------------------------------------------------------------------
 build: $(OBJS) build_external_src
 	@mkdir -p $(BUILD_DIR)
-	@echo Compiling $($(OBJS))
+	@echo Linking
 	$(CXX_LINK) $(OUTPUT_PATH)
 	chmod +x $(OUTPUT_PATH)
 build_external_src:
 	@echo Building external src
-	$(MAKE) -f makefiles/external_src.mk CXX_COMPILE="$(CXX_COMPILE)" SRC="$(SRC_EXTERNAL)" OBJS="$(OBJS_EXTERNAL)"
+	$(MAKE) -f makefiles/external_src.mk COMPILE_CPP="$(COMPILE_CPP)" COMPILE_C="$(COMPILE_C)" SRC="$(SRC_EXTERNAL)" OBJS="$(OBJS_EXTERNAL)"
 	@echo Finished building external src
 -include $(OBJS:.o=.d)
 
@@ -158,10 +159,10 @@ rebuild: clean build
 # $< is the first prerequisite
 $(INTERMIDIARY_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(CXX_COMPILE) "$<" -o "$@"
+	$(COMPILE_CPP) "$<" -o "$@"
 $(INTERMIDIARY_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CXX_COMPILE) "$<" -o "$@"
+	$(COMPILE_C) "$<" -o "$@"
 
 $(SRC_DEPENDENCIES_DIR)/%.d: %.cpp
 	@echo "$<" "$@"

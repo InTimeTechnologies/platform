@@ -20,7 +20,7 @@ namespace it {
 	
 			// Functions
 			bool inTransientState() const;
-			void feedAction(KeyAction action);
+			bool feedAction(KeyAction action);
 			void reset();
 			void resetTransientState();
 			void resetJustPressed();

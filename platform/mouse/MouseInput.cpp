@@ -21,17 +21,22 @@ namespace it {
 		}
 	
 		// Getters
-		const std::forward_list<MouseButton*>& MouseInput::getMouseButtonsToReset() const {
-			return mouseButtonsInTransientState;
-		}
 		const std::vector<MouseButton>& MouseInput::getMouseButtons() const {
 			return mouseButtons;
+		}
+		int MouseInput::getMouseButtonsPressedCount() const {
+			return mouseButtonsPressedCount;
+		}
+		const std::forward_list<MouseButton*>& MouseInput::getMouseButtonsToReset() const {
+			return mouseButtonsInTransientState;
 		}
 		const MouseButton& MouseInput::getMouseButton(MouseButtonCode mouseButtonCode) const {
 			size_t i = static_cast<size_t>(mouseButtonCode);
 			return mouseButtons[i];
 		}
 	
+		// Object | private
+
 		// Functions
 		void MouseInput::feedEvent(MouseButtonCode code, MouseButtonAction action) {
 			size_t i = static_cast<size_t>(code);
@@ -39,20 +44,24 @@ namespace it {
 			if (!mouseButtons[i].inTransientState())
 				mouseButtonsInTransientState.push_front(&mouseButtons[i]);
 	
-			mouseButtons[i].feedAction(action);
+			bool newAction = mouseButtons[i].feedAction(action);
+
+			if (newAction) {
+				if (mouseButtons[i].justPressed)
+					mouseButtonsPressedCount++;
+				if (mouseButtons[i].justReleased)
+					mouseButtonsPressedCount--;
+			}
 		}
 		void MouseInput::reset() {
 			for (size_t i = 0; i < mouseButtons.size(); i++)
 				mouseButtons[i].reset();
+			mouseButtonsInTransientState.clear();
+			mouseButtonsPressedCount = 0;
 		}
 		void MouseInput::resetTransientStates() {
 			for (MouseButton* mouseButton : mouseButtonsInTransientState)
 				mouseButton->resetTransientState();
-			mouseButtonsInTransientState.clear();
-		}
-		void MouseInput::resetAllTransientStates() {
-			for (size_t i = 0; i < mouseButtons.size(); i++)
-				mouseButtons[i].resetTransientState();
 			mouseButtonsInTransientState.clear();
 		}
 	}

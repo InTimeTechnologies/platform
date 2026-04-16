@@ -136,11 +136,15 @@ namespace it {
 		}
 	
 		// Getters
-		const std::forward_list<Key*>& KeyboardInput::getKeysToReset() const {
-			return keysInTransientState;
-		}
 		const std::array<Key, static_cast<size_t>(KeyCode::COUNT)>& KeyboardInput::getKeys() const {
 			return keys;
+		}
+		int KeyboardInput::getKeysPressedCount() const {
+			return keysPressedCount;
+		}
+		
+		const std::forward_list<Key*>& KeyboardInput::getKeysToReset() const {
+			return keysInTransientState;
 		}
 	
 		const Key& KeyboardInput::getKey(KeyCode keyCode) const {
@@ -153,27 +157,32 @@ namespace it {
 			return i < count ? i : 0;
 		}
 	
+		// Object | private
+
 		// Functions
 		void KeyboardInput::feedEvent(KeyCode code, KeyAction action) {
 			size_t i = getKeyIndex(code);
 	
 			if (!keys[i].inTransientState())
 				keysInTransientState.push_front(&keys[i]);
-	
-			keys[i].feedAction(action);
+			bool newAction = keys[i].feedAction(action);
+
+			if (newAction) {
+				if (keys[i].justPressed)
+					keysPressedCount++;
+				if (keys[i].justReleased)
+					keysPressedCount--;
+			}
 		}
 		void KeyboardInput::reset() {
 			for (size_t i = 0; i < keys.size(); i++)
 				keys[i].reset();
+			keysInTransientState.clear();
+			keysPressedCount = 0;
 		}
 		void KeyboardInput::resetTransientStates() {
 			for (Key* key : keysInTransientState)
 				key->resetTransientState();
-			keysInTransientState.clear();
-		}
-		void KeyboardInput::resetAllTransientStates() {
-			for (size_t i = 0; i < keys.size(); i++)
-				keys[i].resetTransientState();
 			keysInTransientState.clear();
 		}
 	}

@@ -2,17 +2,18 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <filesystem>
 
 // Dependencies it::platform
 #include "Platform.h"
-#include "joystick/JoystickButtonCode.h"
+#include "implementation/glfw/PlatformImplementation.h"
 
 void print(const it::platform::Window& window) {
 	std::cout << "title: " << window.getTitle() << std::endl;
 	std::cout << "x: " << window.getX() << ", y: " << window.getY() << ", width: " << window.getWidth() << ", height: " << window.getHeight() << std::endl;
-	std::cout << "visible: " << window.getVisible() << std::endl;
-	std::cout << "resizable: " << window.getResizable() << std::endl;
-	std::cout << "focused: " << window.getFocused() << std::endl;
+	std::cout << "visible: " << window.queryVisible() << std::endl;
+	std::cout << "resizable: " << window.queryResizable() << std::endl;
+	std::cout << "focused: " << window.queryFocused() << std::endl;
 }
 
 void testGamepad(it::platform::Platform& platform) {
@@ -25,7 +26,8 @@ void testGamepad(it::platform::Platform& platform) {
 int testWindowing() {
 	// Platform
 	std::cout << "Creating platform." << std::endl;
-	it::platform::Platform platform{};
+	it::platform::PlatformImplementation platformImplementation{};
+	it::platform::Platform& platform = platformImplementation;
 	bool platformInitiated = platform.init();
 	if (!platformInitiated) {
 		std::cout << "Error: Failed to initiate platform." << std::endl;
@@ -34,13 +36,8 @@ int testWindowing() {
 
 	// Window
 	std::cout << "Creating window." << std::endl;
-	it::platform::Window& window = platform.windowManager.windowList.emplace_back();
-	bool windowCreated = window.create();
-	if (!windowCreated) {
-		std::cout << "Error: Failed to create window." << std::endl;
-		return 2;
-	}
-	window.setVisible(true);
+	it::platform::Window& window = platform.createWindow();
+	window.applyVisible(true);
 
 	// Setup
 	bool exit = false;
@@ -60,12 +57,45 @@ int testWindowing() {
 
 		testGamepad(platform);
 
-		//for (const it::platform::KeyEvent& keyEvent : window.getKeyEventList()) {
-		//	if (keyEvent.keyCode == it::platform::KeyCode::ENTER && keyEvent.action == it::platform::KeyAction::PRESS)
-		//		window.setSize(500, 500);
-		//	if (keyEvent.keyCode == it::platform::KeyCode::ESCAPE && keyEvent.action == it::platform::KeyAction::PRESS)
-		//		exit = true;
-		//}
+		if (platform.keyboardInput.getKey(it::platform::KeyCode::ESCAPE).justPressed)
+			exit = true;
+		if (platform.keyboardInput.getKey(it::platform::KeyCode::ENTER).justPressed)
+			window.setSize(500, 500);
+		if (platform.keyboardInput.getKey(it::platform::KeyCode::ARROW_UP).pressed) {
+			int currentWidth = window.getWidth();
+			int currentHeight = window.getHeight();
+			int newWidth = currentWidth;
+			int newHeight = currentHeight + 1;
+			window.setSize(newWidth, newHeight);
+			std::cout << "Size: (" << window.getHeight() << ", " << window.getWidth() << ")" << std::endl;
+		}
+		if (platform.keyboardInput.getKey(it::platform::KeyCode::ARROW_DOWN).pressed) {
+			int currentWidth = window.getWidth();
+			int currentHeight = window.getHeight();
+			int newWidth = currentWidth;
+			int newHeight = currentHeight - 1;
+			window.setSize(newWidth, newHeight);
+			std::cout << "Size: (" << window.getHeight() << ", " << window.getWidth() << ")" << std::endl;
+		}
+		if (platform.keyboardInput.getKey(it::platform::KeyCode::ARROW_RIGHT).pressed) {
+			int currentWidth = window.getWidth();
+			int currentHeight = window.getHeight();
+			int newWidth = currentWidth + 1;
+			int newHeight = currentHeight;
+			window.setSize(newWidth, newHeight);
+			std::cout << "Size: (" << window.getHeight() << ", " << window.getWidth() << ")" << std::endl;
+		}
+		if (platform.keyboardInput.getKey(it::platform::KeyCode::ARROW_LEFT).pressed) {
+			int currentWidth = window.getWidth();
+			int currentHeight = window.getHeight();
+			int newWidth = currentWidth - 1;
+			int newHeight = currentHeight;
+			window.setSize(newWidth, newHeight);
+			std::cout << "Size: (" << window.getHeight() << ", " << window.getWidth() << ")" << std::endl;
+		}
+		
+		// int keysPressedCount = platform.keyboardInput.getKeysPressedCount();
+		// std::cout << "keysPressedCount: " << keysPressedCount << std::endl;
 	}
 	std::cout << "Terminated loop." << std::endl;
 
@@ -74,8 +104,13 @@ int testWindowing() {
 
 int main(int argc, char* argv[]) {
 	std::cout << "Program operating." << std::endl;
-	int errorCode = 0;
 
+	std::cout << "argc: " << argc << std::endl;
+	for (size_t i = 0; i < static_cast<size_t>(argc); i++) {
+		std::cout << "\t" << argv[i] << std::endl;
+	}
+
+	int errorCode = 0;
 	errorCode = testWindowing();
 
 	std::cout << "Program terminating." << std::endl;

@@ -19,7 +19,7 @@ namespace it {
 	
 			// Functions
 			bool inTransientState() const;
-			void feedAction(JoystickButtonAction action);
+			bool feedAction(JoystickButtonAction action);
 			void reset();
 			void resetTransientState();
 			void resetJustPressed();

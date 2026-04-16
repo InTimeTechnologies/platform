@@ -5,25 +5,36 @@ namespace it {
 		bool Key::inTransientState() const {
 			return justPressed || repeat || justReleased;
 		}
-		void Key::feedAction(KeyAction action) {
+		bool Key::feedAction(KeyAction action) {
+			bool differentAction = true;
+
 			switch (action) {
 				case KeyAction::PRESS:
-					if (!pressed)
+					if (!pressed) {
+						if (justPressed == true)
+							differentAction = false;
 						justPressed = true;
+					}
 					pressed = true;
 					break;
 				case KeyAction::REPEAT:
 					repeat = true;
 					break;
 				case KeyAction::RELEASE:
-					if (pressed)
+					if (pressed) {
+						if (justReleased)
+							differentAction = false;
 						justReleased = true;
+					}
 					pressed = false;
 					break;
 				case KeyAction::UNKNOWN:
 				default:
+					differentAction = false;
 					break;
 			}
+
+			return differentAction;
 		}
 		void Key::reset() {
 			justPressed = false;
