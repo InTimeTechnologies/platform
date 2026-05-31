@@ -13,8 +13,7 @@ $(error COMPILE_C is empty)
 endif
 
 # Ensure SRC and OBJS have the same number of elements
-ifeq ($(words $(SRC)),$(words $(OBJS)))
-else
+ifneq ($(words $(SRC)),$(words $(OBJS)))
 $(error SRC and OBJS must have the same number of elements)
 endif
 

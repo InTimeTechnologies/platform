@@ -9,6 +9,7 @@ namespace it {
 			RIGHT_X,
 			RIGHT_Y,
 			LEFT_TRIGGER,
-			RIGHT_TRIGGER		};
+			RIGHT_TRIGGER
+		};
 	}
 }
